@@ -1,0 +1,41 @@
+# fly.toml — Fly.io deployment config for the GSD Programme Dashboard
+# Deploy with: fly launch --config fly.toml
+# Set secrets with: fly secrets set SUPABASE_URL=... SUPABASE_ANON_KEY=...
+
+app    = "gsd-programme-dashboard"   # change to your app name
+region = "ams"                        # Amsterdam — closest to Beirut with good latency
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  DEMO_MODE = "true"   # Set to "false" in production via fly secrets
+
+[http_service]
+  internal_port       = 8501
+  force_https         = true
+  auto_stop_machines  = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[http_service.checks]]
+  interval   = "30s"
+  timeout    = "10s"
+  grace_period = "30s"
+  method     = "GET"
+  path       = "/_stcore/health"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus     = 1
+  memory   = "512mb"
+
+# ETL cron worker — separate machine, runs only when needed
+# Uncomment when DEMO_MODE = false and Google Sheets integration is configured.
+# [[processes]]
+#   name    = "etl"
+#   cmd     = "python -m etl.scheduler"
+#   [[vm]]
+#     cpu_kind = "shared"
+#     cpus     = 1
+#     memory   = "256mb"

@@ -1,0 +1,793 @@
+{
+  "phases": [
+    {
+      "id": "PH1",
+      "status": "in_progress"
+    },
+    {
+      "id": "PH2",
+      "status": "not_started"
+    },
+    {
+      "id": "PH3",
+      "status": "not_started"
+    }
+  ],
+  "milestones": [
+    {
+      "id": "MS001",
+      "completed": true,
+      "completed_date": "2026-05-26"
+    },
+    {
+      "id": "MS002",
+      "completed": true,
+      "completed_date": "2026-05-26"
+    },
+    {
+      "id": "MS003",
+      "completed": true,
+      "completed_date": "2026-05-26"
+    },
+    {
+      "id": "MS004",
+      "completed": false,
+      "completed_date": null
+    },
+    {
+      "id": "MS005",
+      "completed": false,
+      "completed_date": null
+    },
+    {
+      "id": "MS006",
+      "completed": false,
+      "completed_date": null
+    },
+    {
+      "id": "MS007",
+      "completed": false,
+      "completed_date": null
+    },
+    {
+      "id": "MS008",
+      "completed": false,
+      "completed_date": null
+    },
+    {
+      "id": "MS009",
+      "completed": false,
+      "completed_date": null
+    },
+    {
+      "id": "MS010",
+      "completed": false,
+      "completed_date": null
+    },
+    {
+      "id": "MS011",
+      "completed": false,
+      "completed_date": null
+    },
+    {
+      "id": "MS012",
+      "completed": false,
+      "completed_date": null
+    },
+    {
+      "id": "MS013",
+      "completed": false,
+      "completed_date": null
+    },
+    {
+      "id": "MS014",
+      "completed": false,
+      "completed_date": null
+    }
+  ],
+  "deliverables": [
+    {
+      "id": "D1",
+      "status": "in_progress",
+      "submitted_at": null,
+      "approved_at": null,
+      "quality_gate": "draft",
+      "status_history": [
+        {
+          "status": "not_started",
+          "changed_at": "2026-05-25T00:00:00Z",
+          "changed_by": "system"
+        },
+        {
+          "status": "in_progress",
+          "changed_at": "2026-05-26T08:00:00Z",
+          "changed_by": "saleh.mansour"
+        }
+      ]
+    },
+    {
+      "id": "D2",
+      "status": "not_started",
+      "submitted_at": null,
+      "approved_at": null,
+      "quality_gate": "draft",
+      "status_history": []
+    },
+    {
+      "id": "D3",
+      "status": "not_started",
+      "submitted_at": null,
+      "approved_at": null,
+      "quality_gate": "draft",
+      "status_history": []
+    },
+    {
+      "id": "D4a",
+      "status": "not_started",
+      "submitted_at": null,
+      "approved_at": null,
+      "quality_gate": "draft",
+      "status_history": []
+    },
+    {
+      "id": "D4b",
+      "status": "not_started",
+      "submitted_at": null,
+      "approved_at": null,
+      "quality_gate": "draft",
+      "status_history": []
+    }
+  ],
+  "modules": [
+    {
+      "id": "M01",
+      "status": "not_started"
+    },
+    {
+      "id": "M02",
+      "status": "not_started"
+    },
+    {
+      "id": "M03",
+      "status": "not_started"
+    },
+    {
+      "id": "M04",
+      "status": "not_started"
+    },
+    {
+      "id": "M05",
+      "status": "not_started"
+    },
+    {
+      "id": "M06",
+      "status": "not_started"
+    },
+    {
+      "id": "M07",
+      "status": "not_started"
+    },
+    {
+      "id": "M08",
+      "status": "not_started"
+    },
+    {
+      "id": "M09",
+      "status": "not_started"
+    },
+    {
+      "id": "M10",
+      "status": "not_started"
+    }
+  ],
+  "stakeholders": [
+    {
+      "id": "STK001",
+      "contact_name": null,
+      "contact_title": null,
+      "access_status": "pending",
+      "consultation_window": "2026-06-02 / 2026-06-03",
+      "engagement_score": null
+    },
+    {
+      "id": "STK002",
+      "contact_name": null,
+      "contact_title": null,
+      "access_status": "pending",
+      "consultation_window": "2026-06-02 / 2026-06-03",
+      "engagement_score": null
+    },
+    {
+      "id": "STK003",
+      "contact_name": null,
+      "contact_title": null,
+      "access_status": "to_be_requested",
+      "consultation_window": "2026-06-03 / 2026-06-04",
+      "engagement_score": null
+    },
+    {
+      "id": "STK004",
+      "contact_name": null,
+      "contact_title": null,
+      "access_status": "to_be_requested",
+      "consultation_window": "2026-06-03 / 2026-06-04",
+      "engagement_score": null
+    },
+    {
+      "id": "STK005",
+      "contact_name": null,
+      "contact_title": null,
+      "access_status": "to_be_requested",
+      "consultation_window": "2026-06-03 / 2026-06-04",
+      "engagement_score": null
+    },
+    {
+      "id": "STK006",
+      "contact_name": null,
+      "contact_title": null,
+      "access_status": "to_be_requested",
+      "consultation_window": "2026-06-04",
+      "engagement_score": null
+    },
+    {
+      "id": "STK007",
+      "contact_name": null,
+      "contact_title": null,
+      "access_status": "to_be_requested",
+      "consultation_window": "2026-06-04",
+      "engagement_score": null
+    },
+    {
+      "id": "STK008",
+      "contact_name": "IBG Programme Manager",
+      "contact_title": "Programme Manager",
+      "access_status": "confirmed",
+      "consultation_window": "2026-05-26",
+      "engagement_score": 9.0
+    },
+    {
+      "id": "STK009",
+      "contact_name": null,
+      "contact_title": null,
+      "access_status": "to_be_requested",
+      "consultation_window": null,
+      "engagement_score": null
+    },
+    {
+      "id": "STK010",
+      "contact_name": null,
+      "contact_title": null,
+      "access_status": "to_be_requested",
+      "consultation_window": null,
+      "engagement_score": null
+    },
+    {
+      "id": "STK011",
+      "contact_name": null,
+      "contact_title": null,
+      "access_status": "to_be_requested",
+      "consultation_window": null,
+      "engagement_score": null
+    },
+    {
+      "id": "STK012",
+      "contact_name": null,
+      "contact_title": null,
+      "access_status": "to_be_requested",
+      "consultation_window": null,
+      "engagement_score": null
+    },
+    {
+      "id": "STK013",
+      "contact_name": null,
+      "contact_title": null,
+      "access_status": "to_be_requested",
+      "consultation_window": "2026-06-04",
+      "engagement_score": null
+    },
+    {
+      "id": "STK014",
+      "contact_name": null,
+      "contact_title": null,
+      "access_status": "to_be_requested",
+      "consultation_window": "2026-06-04",
+      "engagement_score": null
+    },
+    {
+      "id": "STK015",
+      "contact_name": null,
+      "contact_title": null,
+      "access_status": "to_be_requested",
+      "consultation_window": null,
+      "engagement_score": null
+    },
+    {
+      "id": "STK016",
+      "contact_name": null,
+      "contact_title": null,
+      "access_status": "to_be_requested",
+      "consultation_window": null,
+      "engagement_score": null
+    }
+  ],
+  "risks": [
+    {
+      "id": "R001",
+      "likelihood": 4,
+      "impact": 5,
+      "status": "active",
+      "history": [
+        {
+          "date": "2026-05-26",
+          "likelihood": 4,
+          "impact": 5,
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "id": "R002",
+      "likelihood": 4,
+      "impact": 3,
+      "status": "active",
+      "history": [
+        {
+          "date": "2026-05-26",
+          "likelihood": 4,
+          "impact": 3,
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "id": "R003",
+      "likelihood": 3,
+      "impact": 4,
+      "status": "active",
+      "history": [
+        {
+          "date": "2026-05-26",
+          "likelihood": 3,
+          "impact": 4,
+          "status": "active"
+        }
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": 1,
+      "date_raised": "2026-05-26",
+      "description": "Document request submitted \u2014 awaiting GSD response within 3 working days",
+      "category": "document",
+      "risk_level": "high",
+      "assigned_to": "Saleh Mansour",
+      "target_date": "2026-05-29",
+      "status": "open"
+    },
+    {
+      "id": 2,
+      "date_raised": "2026-05-26",
+      "description": "GSD Training Academy access request submitted \u2014 physical access pending formal confirmation",
+      "category": "access",
+      "risk_level": "medium",
+      "assigned_to": "IBG Programme Manager",
+      "target_date": "2026-05-30",
+      "status": "open"
+    }
+  ],
+  "kpis": [
+    {
+      "id": "KPI001",
+      "current_value": 14.3,
+      "trend": [
+        {
+          "date": "2026-05-26",
+          "value": 0.0
+        },
+        {
+          "date": "2026-05-27",
+          "value": 14.3
+        }
+      ]
+    },
+    {
+      "id": "KPI002",
+      "current_value": null,
+      "trend": []
+    },
+    {
+      "id": "KPI003",
+      "current_value": 0.0,
+      "trend": [
+        {
+          "date": "2026-05-26",
+          "value": 0.0
+        }
+      ]
+    },
+    {
+      "id": "KPI004",
+      "current_value": 2,
+      "trend": [
+        {
+          "date": "2026-05-26",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "id": "KPI005",
+      "current_value": 0.0,
+      "trend": [
+        {
+          "date": "2026-05-26",
+          "value": 0.0
+        }
+      ]
+    }
+  ],
+  "kpi_snapshots": [],
+  "audit_log": [
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "7d7b8465-a06a-4a72-9fa6-168d650551b6",
+      "timestamp": "2026-05-24T13:24:40.712654"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "7d7b8465-a06a-4a72-9fa6-168d650551b6",
+      "timestamp": "2026-05-24T13:25:09.102713"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_stakeholder_map",
+      "record_type": "page",
+      "record_id": "stakeholder_views",
+      "session_id": "7d7b8465-a06a-4a72-9fa6-168d650551b6",
+      "timestamp": "2026-05-24T13:25:10.047494"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_risk_register",
+      "record_type": "page",
+      "record_id": "risk_heatmap",
+      "session_id": "7d7b8465-a06a-4a72-9fa6-168d650551b6",
+      "timestamp": "2026-05-24T13:25:10.568749"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_deliverables",
+      "record_type": "page",
+      "record_id": "deliverables",
+      "session_id": "7d7b8465-a06a-4a72-9fa6-168d650551b6",
+      "timestamp": "2026-05-24T13:25:15.224444"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_kpi_dashboard",
+      "record_type": "page",
+      "record_id": "kpi_dashboard",
+      "session_id": "7d7b8465-a06a-4a72-9fa6-168d650551b6",
+      "timestamp": "2026-05-24T13:25:20.884191"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_deliverables",
+      "record_type": "page",
+      "record_id": "deliverables",
+      "session_id": "7d7b8465-a06a-4a72-9fa6-168d650551b6",
+      "timestamp": "2026-05-24T13:26:21.957309"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "b7f24d81-9136-4c8f-8730-eb9398cfd655",
+      "timestamp": "2026-05-24T13:31:06.052880"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_stakeholder_map",
+      "record_type": "page",
+      "record_id": "stakeholder_views",
+      "session_id": "b7f24d81-9136-4c8f-8730-eb9398cfd655",
+      "timestamp": "2026-05-24T13:31:09.372462"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_risk_register",
+      "record_type": "page",
+      "record_id": "risk_heatmap",
+      "session_id": "b7f24d81-9136-4c8f-8730-eb9398cfd655",
+      "timestamp": "2026-05-24T13:31:41.326401"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_deliverables",
+      "record_type": "page",
+      "record_id": "deliverables",
+      "session_id": "b7f24d81-9136-4c8f-8730-eb9398cfd655",
+      "timestamp": "2026-05-24T13:31:58.807448"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_kpi_dashboard",
+      "record_type": "page",
+      "record_id": "kpi_dashboard",
+      "session_id": "b7f24d81-9136-4c8f-8730-eb9398cfd655",
+      "timestamp": "2026-05-24T13:32:01.783606"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "996374c6-54aa-4f5d-aa59-9c758c1bccf4",
+      "timestamp": "2026-05-24T13:35:20.466310"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_risk_register",
+      "record_type": "page",
+      "record_id": "risk_heatmap",
+      "session_id": "996374c6-54aa-4f5d-aa59-9c758c1bccf4",
+      "timestamp": "2026-05-24T13:35:59.976028"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "996374c6-54aa-4f5d-aa59-9c758c1bccf4",
+      "timestamp": "2026-05-24T13:36:02.488852"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_kpi_dashboard",
+      "record_type": "page",
+      "record_id": "kpi_dashboard",
+      "session_id": "996374c6-54aa-4f5d-aa59-9c758c1bccf4",
+      "timestamp": "2026-05-24T13:36:14.706675"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_stakeholder_map",
+      "record_type": "page",
+      "record_id": "stakeholder_views",
+      "session_id": "996374c6-54aa-4f5d-aa59-9c758c1bccf4",
+      "timestamp": "2026-05-24T13:36:20.377276"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "996374c6-54aa-4f5d-aa59-9c758c1bccf4",
+      "timestamp": "2026-05-24T13:37:57.625872"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_stakeholder_map",
+      "record_type": "page",
+      "record_id": "stakeholder_views",
+      "session_id": "996374c6-54aa-4f5d-aa59-9c758c1bccf4",
+      "timestamp": "2026-05-24T13:38:03.515628"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_stakeholder_map",
+      "record_type": "page",
+      "record_id": "stakeholder_views",
+      "session_id": "996374c6-54aa-4f5d-aa59-9c758c1bccf4",
+      "timestamp": "2026-05-24T13:38:42.996557"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_deliverables",
+      "record_type": "page",
+      "record_id": "deliverables",
+      "session_id": "996374c6-54aa-4f5d-aa59-9c758c1bccf4",
+      "timestamp": "2026-05-24T13:39:13.091338"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_kpi_dashboard",
+      "record_type": "page",
+      "record_id": "kpi_dashboard",
+      "session_id": "996374c6-54aa-4f5d-aa59-9c758c1bccf4",
+      "timestamp": "2026-05-24T13:39:24.579854"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_deliverables",
+      "record_type": "page",
+      "record_id": "deliverables",
+      "session_id": "996374c6-54aa-4f5d-aa59-9c758c1bccf4",
+      "timestamp": "2026-05-24T13:39:38.061879"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_deliverables",
+      "record_type": "page",
+      "record_id": "deliverables",
+      "session_id": "996374c6-54aa-4f5d-aa59-9c758c1bccf4",
+      "timestamp": "2026-05-24T13:39:59.585494"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_kpi_dashboard",
+      "record_type": "page",
+      "record_id": "kpi_dashboard",
+      "session_id": "996374c6-54aa-4f5d-aa59-9c758c1bccf4",
+      "timestamp": "2026-05-24T13:39:59.974819"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_deliverables",
+      "record_type": "page",
+      "record_id": "deliverables",
+      "session_id": "996374c6-54aa-4f5d-aa59-9c758c1bccf4",
+      "timestamp": "2026-05-24T13:40:01.901504"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_risk_register",
+      "record_type": "page",
+      "record_id": "risk_heatmap",
+      "session_id": "996374c6-54aa-4f5d-aa59-9c758c1bccf4",
+      "timestamp": "2026-05-24T13:40:04.026055"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_stakeholder_map",
+      "record_type": "page",
+      "record_id": "stakeholder_views",
+      "session_id": "996374c6-54aa-4f5d-aa59-9c758c1bccf4",
+      "timestamp": "2026-05-24T13:40:05.979543"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "996374c6-54aa-4f5d-aa59-9c758c1bccf4",
+      "timestamp": "2026-05-24T13:40:08.463187"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_deliverables",
+      "record_type": "page",
+      "record_id": "deliverables",
+      "session_id": "1847c86d-4c20-4062-9e17-0ecc1ab8304a",
+      "timestamp": "2026-05-24T13:41:39.608167"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_deliverables",
+      "record_type": "page",
+      "record_id": "deliverables",
+      "session_id": "1847c86d-4c20-4062-9e17-0ecc1ab8304a",
+      "timestamp": "2026-05-24T14:48:16.108910"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_deliverables",
+      "record_type": "page",
+      "record_id": "deliverables",
+      "session_id": "1847c86d-4c20-4062-9e17-0ecc1ab8304a",
+      "timestamp": "2026-05-24T14:48:19.236701"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_risk_register",
+      "record_type": "page",
+      "record_id": "risk_heatmap",
+      "session_id": "1847c86d-4c20-4062-9e17-0ecc1ab8304a",
+      "timestamp": "2026-05-24T14:48:21.547236"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "1847c86d-4c20-4062-9e17-0ecc1ab8304a",
+      "timestamp": "2026-05-24T14:50:05.699306"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_stakeholder_map",
+      "record_type": "page",
+      "record_id": "stakeholder_views",
+      "session_id": "1847c86d-4c20-4062-9e17-0ecc1ab8304a",
+      "timestamp": "2026-05-24T14:50:29.573695"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_risk_register",
+      "record_type": "page",
+      "record_id": "risk_heatmap",
+      "session_id": "1847c86d-4c20-4062-9e17-0ecc1ab8304a",
+      "timestamp": "2026-05-24T14:50:53.494838"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_deliverables",
+      "record_type": "page",
+      "record_id": "deliverables",
+      "session_id": "1847c86d-4c20-4062-9e17-0ecc1ab8304a",
+      "timestamp": "2026-05-24T14:50:55.341199"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_kpi_dashboard",
+      "record_type": "page",
+      "record_id": "kpi_dashboard",
+      "session_id": "1847c86d-4c20-4062-9e17-0ecc1ab8304a",
+      "timestamp": "2026-05-24T14:51:11.051827"
+    }
+  ],
+  "etl_sync_log": [
+    {
+      "table_name": "issues",
+      "synced_at": "2026-05-24T13:18:34.139528"
+    },
+    {
+      "table_name": "stakeholders",
+      "synced_at": "2026-05-24T13:18:34.139532"
+    },
+    {
+      "table_name": "standards",
+      "synced_at": "2026-05-24T13:18:34.139534"
+    },
+    {
+      "table_name": "kpi_snapshots",
+      "synced_at": "2026-05-24T13:18:34.139535"
+    }
+  ]
+}

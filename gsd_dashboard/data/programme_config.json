@@ -1,0 +1,285 @@
+{
+  "programme": {
+    "id": "IOM-LB-GSD-2026-001",
+    "title": "GSD Curriculum Development Consultancy",
+    "org": "IOM Lebanon",
+    "beneficiary": "General Directorate of General Security (GSD)",
+    "unit": "Immigration and Border Governance (IBG)",
+    "consultant": "Saleh Mansour",
+    "duty_station": "Beirut, Lebanon",
+    "start_date": "2026-05-25",
+    "duration_days": 120,
+    "reporting_line": {
+      "direct": "IBG Programme Manager",
+      "overall": "IOM Lebanon Head of Office"
+    }
+  },
+  "phases": [
+    {
+      "id": "PH1",
+      "name": "Needs Assessment and Mapping",
+      "start_week": 1,
+      "end_week": 4,
+      "status": "in_progress"
+    },
+    {
+      "id": "PH2",
+      "name": "Curriculum Design",
+      "start_week": 5,
+      "end_week": 8,
+      "status": "not_started"
+    },
+    {
+      "id": "PH3",
+      "name": "Validation and Finalization",
+      "start_week": 9,
+      "end_week": 10,
+      "status": "not_started"
+    }
+  ],
+  "milestones": [
+    {"id": "MS001", "description": "Document request pack submitted to GSD via IOM", "target_date": "2026-05-26", "completed": true,  "completed_date": "2026-05-26"},
+    {"id": "MS002", "description": "GSD focal point confirmed and decision-making structure mapped", "target_date": "2026-05-26", "completed": true,  "completed_date": "2026-05-26"},
+    {"id": "MS003", "description": "Issue log opened with Day 1 entries", "target_date": "2026-05-26", "completed": true,  "completed_date": "2026-05-26"},
+    {"id": "MS004", "description": "Stakeholder map first draft complete", "target_date": "2026-05-28", "completed": false, "completed_date": null},
+    {"id": "MS005", "description": "Data-collection instrument set drafted", "target_date": "2026-05-29", "completed": false, "completed_date": null},
+    {"id": "MS006", "description": "Three or more Week-2 consultation slots confirmed", "target_date": "2026-05-30", "completed": false, "completed_date": null},
+    {"id": "MS007", "description": "GSD consultations — Leadership and Academy", "target_date": "2026-06-02", "completed": false, "completed_date": null},
+    {"id": "MS008", "description": "GSD consultations — Operational units and document review", "target_date": "2026-06-03", "completed": false, "completed_date": null},
+    {"id": "MS009", "description": "GSD consultations — Legal, IT/Data, and partner actors", "target_date": "2026-06-04", "completed": false, "completed_date": null},
+    {"id": "MS010", "description": "Inception Report submitted — triggers 20% payment", "target_date": "2026-06-06", "completed": false, "completed_date": null},
+    {"id": "MS011", "description": "Needs Assessment Report submitted — triggers 20% payment", "target_date": "2026-06-20", "completed": false, "completed_date": null},
+    {"id": "MS012", "description": "Draft Training Curriculum Package submitted — triggers 30% payment", "target_date": "2026-07-18", "completed": false, "completed_date": null},
+    {"id": "MS013", "description": "Validation Workshop conducted with GSD and IOM", "target_date": "2026-07-25", "completed": false, "completed_date": null},
+    {"id": "MS014", "description": "Final Curriculum Package submitted — triggers 30% payment", "target_date": "2026-07-31", "completed": false, "completed_date": null}
+  ],
+  "deliverables": [
+    {
+      "id": "D1",
+      "name": "Inception Report",
+      "description": "Detailed workplan, methodological approach, and stakeholder mapping. Includes field-visit plan, data-collection instruments (KII guides, focus group guide, site observation checklist, curriculum audit form), issue log, quality plan, and provisional validation calendar.",
+      "phase_id": "PH1",
+      "due_week": 2,
+      "due_date": "2026-06-06",
+      "payment_pct": 20.0,
+      "status": "in_progress",
+      "submitted_at": null,
+      "approved_at": null,
+      "reviewer": "IBG Programme Manager",
+      "quality_gate": "draft",
+      "status_history": [
+        {"status": "not_started", "changed_at": "2026-05-25T00:00:00Z", "changed_by": "system"},
+        {"status": "in_progress",  "changed_at": "2026-05-26T08:00:00Z", "changed_by": "saleh.mansour"}
+      ]
+    },
+    {
+      "id": "D2",
+      "name": "Needs Assessment Report",
+      "description": "Review of existing GSD training materials across all ten thematic areas. Identification of gaps between current provision and international standards. Recommendations for priority thematic areas and curriculum sequencing.",
+      "phase_id": "PH1",
+      "due_week": 4,
+      "due_date": "2026-06-20",
+      "payment_pct": 20.0,
+      "status": "not_started",
+      "submitted_at": null,
+      "approved_at": null,
+      "reviewer": "IBG Programme Manager",
+      "quality_gate": "draft",
+      "status_history": []
+    },
+    {
+      "id": "D3",
+      "name": "Draft Training Curriculum Package",
+      "description": "Full modular curriculum covering ten thematic areas. Includes trainer guides, participant materials, session plans, presentations, case studies, and assessment tools for each module. All materials aligned with IOM IBG framework and international standards.",
+      "phase_id": "PH2",
+      "due_week": 8,
+      "due_date": "2026-07-18",
+      "payment_pct": 30.0,
+      "status": "not_started",
+      "submitted_at": null,
+      "approved_at": null,
+      "reviewer": "IBG Programme Manager",
+      "quality_gate": "draft",
+      "status_history": []
+    },
+    {
+      "id": "D4a",
+      "name": "Validation Workshop",
+      "description": "Presentation of draft curriculum materials to GSD and IOM. Structured feedback session. Documentation of all feedback received for integration into the final package.",
+      "phase_id": "PH3",
+      "due_week": 9,
+      "due_date": "2026-07-25",
+      "payment_pct": 0.0,
+      "status": "not_started",
+      "submitted_at": null,
+      "approved_at": null,
+      "reviewer": "IBG Programme Manager",
+      "quality_gate": "draft",
+      "status_history": []
+    },
+    {
+      "id": "D4b",
+      "name": "Final Curriculum Package",
+      "description": "Revised and finalised modules in digital and printable formats. Includes implementation roadmap covering delivery modalities, monitoring tools, and trainer selection criteria.",
+      "phase_id": "PH3",
+      "due_week": 10,
+      "due_date": "2026-07-31",
+      "payment_pct": 30.0,
+      "status": "not_started",
+      "submitted_at": null,
+      "approved_at": null,
+      "reviewer": "IBG Programme Manager",
+      "quality_gate": "draft",
+      "status_history": []
+    }
+  ],
+  "modules": [
+    {"id": "M01", "title": "Integrated Border Management (IBM) Principles",         "phase_id": "PH2", "status": "not_started", "standards_mapped": ["IOM IBG Framework"],                                                                                      "applicable_deliverable": "D3"},
+    {"id": "M02", "title": "Travel Document Examination and Fraud Detection",       "phase_id": "PH2", "status": "not_started", "standards_mapped": ["ICAO Doc 9303", "ICAO Doc 9957 / DTA"],                                                                   "applicable_deliverable": "D3"},
+    {"id": "M03", "title": "Passenger Data and Risk Analysis (API/PNR)",            "phase_id": "PH2", "status": "not_started", "standards_mapped": ["ICAO Doc 9957 / Annex 9 Ch.9 — API", "ICAO Doc 9957 / Annex 9 Ch.9 — PNR", "ICAO Doc 9957 — DTA"],      "applicable_deliverable": "D3"},
+    {"id": "M04", "title": "Human Rights and Protection at Borders",                "phase_id": "PH2", "status": "not_started", "standards_mapped": ["OHCHR Principles and Guidelines", "UN HR International Borders"],                                         "applicable_deliverable": "D3"},
+    {"id": "M05", "title": "Counter-Smuggling and Counter-Trafficking Awareness",   "phase_id": "PH2", "status": "not_started", "standards_mapped": ["OHCHR Principles and Guidelines", "UN HR International Borders", "UNODC HT Toolkit"],                   "applicable_deliverable": "D3"},
+    {"id": "M06", "title": "Gender- and Child-Sensitive Border Management",         "phase_id": "PH2", "status": "not_started", "standards_mapped": ["OHCHR Principles and Guidelines"],                                                                        "applicable_deliverable": "D3"},
+    {"id": "M07", "title": "Migration Health and Vulnerability Screening",          "phase_id": "PH2", "status": "not_started", "standards_mapped": ["WHO IHR Points of Entry"],                                                                                "applicable_deliverable": "D3"},
+    {"id": "M08", "title": "Search and Rescue (Maritime Border Component)",         "phase_id": "PH2", "status": "not_started", "standards_mapped": ["IMO FAL 50"],                                                                                             "applicable_deliverable": "D3"},
+    {"id": "M09", "title": "Crisis Management and Emergency Response",              "phase_id": "PH2", "status": "not_started", "standards_mapped": [],                                                                                                          "applicable_deliverable": "D3"},
+    {"id": "M10", "title": "Data Protection, Ethics, and Information Security",     "phase_id": "PH2", "status": "not_started", "standards_mapped": ["IOM Data Protection Manual"],                                                                             "applicable_deliverable": "D3"}
+  ],
+  "stakeholders": [
+    {"id": "STK001", "org_unit": "GSD Leadership",                                   "contact_name": null, "contact_title": null, "actor_category": "GSD_leadership",        "role": "approver",  "method": "interview",        "access_status": "pending",          "consultation_window": "2026-06-02 / 2026-06-03", "engagement_score": null},
+    {"id": "STK002", "org_unit": "GSD Training Academy",                             "contact_name": null, "contact_title": null, "actor_category": "GSD_academy",           "role": "approver",  "method": "interview",        "access_status": "pending",          "consultation_window": "2026-06-02 / 2026-06-03", "engagement_score": null},
+    {"id": "STK003", "org_unit": "GSD Land Border Units",                            "contact_name": null, "contact_title": null, "actor_category": "GSD_operational",       "role": "informant", "method": "interview",        "access_status": "to_be_requested",  "consultation_window": "2026-06-03 / 2026-06-04", "engagement_score": null},
+    {"id": "STK004", "org_unit": "GSD Airport Unit — Rafic Hariri Int'l Airport",   "contact_name": null, "contact_title": null, "actor_category": "GSD_operational",       "role": "informant", "method": "interview",        "access_status": "to_be_requested",  "consultation_window": "2026-06-03 / 2026-06-04", "engagement_score": null},
+    {"id": "STK005", "org_unit": "GSD Maritime Unit — Tripoli Port",                 "contact_name": null, "contact_title": null, "actor_category": "GSD_operational",       "role": "informant", "method": "interview",        "access_status": "to_be_requested",  "consultation_window": "2026-06-03 / 2026-06-04", "engagement_score": null},
+    {"id": "STK006", "org_unit": "GSD Legal Unit",                                   "contact_name": null, "contact_title": null, "actor_category": "GSD_legal_it",          "role": "informant", "method": "interview",        "access_status": "to_be_requested",  "consultation_window": "2026-06-04", "engagement_score": null},
+    {"id": "STK007", "org_unit": "GSD IT/Data Unit",                                 "contact_name": null, "contact_title": null, "actor_category": "GSD_legal_it",          "role": "informant", "method": "interview",        "access_status": "to_be_requested",  "consultation_window": "2026-06-04", "engagement_score": null},
+    {"id": "STK008", "org_unit": "IOM Lebanon IBG Programme Team",                   "contact_name": "IBG Programme Manager", "contact_title": "Programme Manager", "actor_category": "IOM", "role": "reviewer", "method": "interview", "access_status": "confirmed", "consultation_window": "2026-05-26", "engagement_score": 9.0},
+    {"id": "STK009", "org_unit": "Lebanese Armed Forces (LAF)",                      "contact_name": null, "contact_title": null, "actor_category": "national_partner",      "role": "informant", "method": "interview",        "access_status": "to_be_requested",  "consultation_window": null, "engagement_score": null},
+    {"id": "STK010", "org_unit": "Lebanese Customs Directorate",                     "contact_name": null, "contact_title": null, "actor_category": "national_partner",      "role": "informant", "method": "interview",        "access_status": "to_be_requested",  "consultation_window": null, "engagement_score": null},
+    {"id": "STK011", "org_unit": "Ministry of Public Health",                        "contact_name": null, "contact_title": null, "actor_category": "national_partner",      "role": "informant", "method": "interview",        "access_status": "to_be_requested",  "consultation_window": null, "engagement_score": null},
+    {"id": "STK012", "org_unit": "Ministry of Interior",                             "contact_name": null, "contact_title": null, "actor_category": "national_partner",      "role": "informant", "method": "document_review",  "access_status": "to_be_requested",  "consultation_window": null, "engagement_score": null},
+    {"id": "STK013", "org_unit": "UNHCR Lebanon",                                    "contact_name": null, "contact_title": null, "actor_category": "international_partner", "role": "informant", "method": "interview",        "access_status": "to_be_requested",  "consultation_window": "2026-06-04", "engagement_score": null},
+    {"id": "STK014", "org_unit": "UNODC Regional Office",                            "contact_name": null, "contact_title": null, "actor_category": "international_partner", "role": "informant", "method": "interview",        "access_status": "to_be_requested",  "consultation_window": "2026-06-04", "engagement_score": null},
+    {"id": "STK015", "org_unit": "European Union Delegation",                        "contact_name": null, "contact_title": null, "actor_category": "international_partner", "role": "informant", "method": "document_review",  "access_status": "to_be_requested",  "consultation_window": null, "engagement_score": null},
+    {"id": "STK016", "org_unit": "INTERPOL National Central Bureau",                 "contact_name": null, "contact_title": null, "actor_category": "international_partner", "role": "informant", "method": "document_review",  "access_status": "to_be_requested",  "consultation_window": null, "engagement_score": null}
+  ],
+  "risks": [
+    {
+      "id": "R001",
+      "description": "Document access delay — GSD materials not received within 3 working days of Day 1 request",
+      "category": "access",
+      "likelihood": 4,
+      "impact": 5,
+      "mitigation": "Submit written request on Day 1. Proceed with provisional desk analysis of international standards while waiting. Mark all provisional findings clearly.",
+      "escalation_trigger": "GSD materials not received within 3 working days — escalate immediately to IOM Programme Manager.",
+      "status": "active",
+      "owner": "Saleh Mansour",
+      "raised_date": "2026-05-26",
+      "history": [{"date": "2026-05-26", "likelihood": 4, "impact": 5, "status": "active"}]
+    },
+    {
+      "id": "R002",
+      "description": "Stakeholder unavailability — GSD operational staff not confirmable for Week-2 interviews",
+      "category": "coordination",
+      "likelihood": 4,
+      "impact": 3,
+      "mitigation": "Confirm all Week-2 interview slots by end of Day 5. GSD operational staff subject to shift cycles — secure confirmation early.",
+      "escalation_trigger": "Fewer than 3 interviews confirmed by end of Day 5 — flag to IOM and propose asynchronous alternatives.",
+      "status": "active",
+      "owner": "Saleh Mansour",
+      "raised_date": "2026-05-26",
+      "history": [{"date": "2026-05-26", "likelihood": 4, "impact": 3, "status": "active"}]
+    },
+    {
+      "id": "R003",
+      "description": "Scope ambiguity — conflicting signals from GSD leadership and operational units on training priorities",
+      "category": "scope",
+      "likelihood": 3,
+      "impact": 4,
+      "mitigation": "Document both positions in issue log. Do not absorb the conflict silently into the workplan.",
+      "escalation_trigger": "Conflicting positions unresolved after Day 7 — escalate via written options memo to IOM-GSD steering level.",
+      "status": "active",
+      "owner": "Saleh Mansour",
+      "raised_date": "2026-05-26",
+      "history": [{"date": "2026-05-26", "likelihood": 3, "impact": 4, "status": "active"}]
+    }
+  ],
+  "standards_reference": [
+    {"id": "SR01", "source": "IOM IBG Framework",                         "standard": "Five IBM pillars; competency expectations for border officials",                                        "modules": ["M01"], "status": "mapped"},
+    {"id": "SR02", "source": "IOM Data Protection Manual",                "standard": "Ten data protection principles; lawful processing conditions; third-party data sharing",              "modules": ["M10"], "status": "mapped"},
+    {"id": "SR03", "source": "ICAO Doc 9303",                             "standard": "MRZ structure (TD1/TD2/TD3); check-digit logic; visual security features",                            "modules": ["M02"], "status": "mapped"},
+    {"id": "SR04", "source": "ICAO Doc 9957 / Annex 9 Ch.9 — API",       "standard": "PAXLST format; no non-standard data elements; 24/7 continuity requirement",                          "modules": ["M03"], "status": "mapped"},
+    {"id": "SR05", "source": "ICAO Doc 9957 / Annex 9 Ch.9 — PNR",       "standard": "UNSC Res. 2396 (2017) mandate; Single Window; data minimisation Standard 9.30",                      "modules": ["M03"], "status": "mapped"},
+    {"id": "SR06", "source": "ICAO Doc 9957 — DTA",                       "standard": "Digital Travel Authorization specification; verification at points of entry",                         "modules": ["M02","M03"], "status": "mapped"},
+    {"id": "SR07", "source": "OHCHR Principles and Guidelines",           "standard": "Principles 1–10; Guidelines 6, 7, 8 — screening, interviewing, referral",                            "modules": ["M04","M05","M06"], "status": "mapped"},
+    {"id": "SR08", "source": "UN HR International Borders",               "standard": "Trafficking vs. smuggling distinction table; vulnerability indicators",                               "modules": ["M04","M05"], "status": "mapped"},
+    {"id": "SR09", "source": "UNODC HT Toolkit",                          "standard": "Front-line trafficking indicators; referral pathway logic; victim-centred approach",                 "modules": ["M05"], "status": "mapped"},
+    {"id": "SR10", "source": "IMO FAL 50",                                "standard": "Maritime digitalization; single-window for ports; crew/passenger formalities",                       "modules": ["M08"], "status": "mapped"},
+    {"id": "SR11", "source": "WHO IHR Points of Entry",                   "standard": "Eight core capacity requirements; health-based entry restrictions — HR compliance",                  "modules": ["M07"], "status": "mapped"},
+    {"id": "SR12", "source": "IOM World Migration Report 2026",           "standard": "Lebanon migration and displacement data — scenario context figures",                                  "modules": ["M01","M02","M03","M04","M05","M06","M07","M08","M09","M10"], "status": "mapped"}
+  ],
+  "issues": [
+    {"id": 1, "date_raised": "2026-05-26", "description": "Document request submitted — awaiting GSD response within 3 working days",   "category": "document",     "risk_level": "high",   "assigned_to": "Saleh Mansour",       "target_date": "2026-05-29", "status": "open"},
+    {"id": 2, "date_raised": "2026-05-26", "description": "GSD Training Academy access request submitted — physical access pending formal confirmation", "category": "access", "risk_level": "medium", "assigned_to": "IBG Programme Manager", "target_date": "2026-05-30", "status": "open"}
+  ],
+  "kpis": [
+    {
+      "id": "KPI001",
+      "name": "Stakeholder Engagement",
+      "definition": "Percentage of seven defined actor categories with at least one confirmed consultation completed.",
+      "unit": "percent",
+      "baseline": 0.0,
+      "target": 100.0,
+      "current_value": 14.3,
+      "trend": [
+        {"date": "2026-05-26", "value": 0.0},
+        {"date": "2026-05-27", "value": 14.3}
+      ],
+      "data_source": "stakeholders — confirmed / total categories"
+    },
+    {
+      "id": "KPI002",
+      "name": "Delivery Timeliness",
+      "definition": "Average days variance across submitted deliverables. Negative = early. Positive = late.",
+      "unit": "days",
+      "baseline": 0,
+      "target": 0,
+      "current_value": null,
+      "trend": [],
+      "data_source": "deliverables — submitted_at minus due_date"
+    },
+    {
+      "id": "KPI003",
+      "name": "Standards Coverage",
+      "definition": "Percentage of 10 curriculum modules with full standards alignment documented.",
+      "unit": "percent",
+      "baseline": 0.0,
+      "target": 100.0,
+      "current_value": 0.0,
+      "trend": [{"date": "2026-05-26", "value": 0.0}],
+      "data_source": "modules — standards_aligned or finalized count / 10"
+    },
+    {
+      "id": "KPI004",
+      "name": "Open Issues",
+      "definition": "Count of issues with status = open.",
+      "unit": "count",
+      "baseline": 0,
+      "target": 0,
+      "current_value": 2,
+      "trend": [{"date": "2026-05-26", "value": 2}],
+      "data_source": "issues — count where status=open"
+    },
+    {
+      "id": "KPI005",
+      "name": "Curriculum Completion",
+      "definition": "Percentage of 10 curriculum modules at finalized status.",
+      "unit": "percent",
+      "baseline": 0.0,
+      "target": 100.0,
+      "current_value": 0.0,
+      "trend": [{"date": "2026-05-26", "value": 0.0}],
+      "data_source": "modules — finalized count / 10"
+    }
+  ]
+}
