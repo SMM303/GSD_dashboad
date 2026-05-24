@@ -197,10 +197,20 @@ def _demo_login_form() -> None:
 
 
 def _production_login_form() -> None:
-    """Use private bcrypt-hashed credentials from secrets or environment."""
+    """
+    Three-tier credential check (in order):
+
+    1. Supabase app_users table  — live managed accounts.
+    2. AUTH_CREDENTIALS_JSON     — Fly.io secret kept in sync by accounts.py;
+                                   acts as a hot standby when Supabase is down.
+    3. auth_credentials TOML     — static bootstrap admin in secrets.toml;
+                                   used only before any managed accounts exist.
+    """
     import yaml
 
-    from auth.accounts import authenticate_account, verify_password
+    from auth.accounts import verify_password
+    from auth.accounts import authenticate_account
+    from auth.fly_secrets import get_fly_credentials
 
     try:
         raw_config = _secret("auth_credentials") or os.environ.get("AUTH_CREDENTIALS_YAML")
@@ -208,7 +218,7 @@ def _production_login_form() -> None:
     except Exception:
         config = None
 
-    users = (config or {}).get("credentials", {}).get("usernames", {})
+    bootstrap_users = (config or {}).get("credentials", {}).get("usernames", {})
     st.caption(f"Production mode · Sessions expire after {get_session_timeout_minutes()} minutes of inactivity.")
 
     with st.form("production_login"):
@@ -218,22 +228,36 @@ def _production_login_form() -> None:
 
     if submit:
         username = username.strip().lower()
+
+        # ── Tier 1: Supabase ─────────────────────────────────────────────
         account = authenticate_account(username, password)
         if account:
+            _start_session(account["username"], account["name"], account["role"])
+            st.rerun()
+
+        # ── Tier 2: AUTH_CREDENTIALS_JSON (Fly.io secret backup) ─────────
+        fly_users = get_fly_credentials()
+        fly_user = fly_users.get(username)
+        if (
+            fly_user
+            and fly_user.get("active", True)
+            and verify_password(password, fly_user.get("password_hash", ""))
+        ):
             _start_session(
-                account["username"],
-                account["name"],
-                account["role"],
+                username,
+                fly_user.get("display_name", username),
+                fly_user.get("role", "executive"),
             )
             st.rerun()
 
-        user_cfg = users.get(username)
-        hashed = str(user_cfg.get("password", "")) if user_cfg else ""
-        if user_cfg and verify_password(password, hashed):
+        # ── Tier 3: bootstrap TOML (auth_credentials in secrets) ─────────
+        bootstrap = bootstrap_users.get(username)
+        hashed = str(bootstrap.get("password", "")) if bootstrap else ""
+        if bootstrap and verify_password(password, hashed):
             _start_session(
                 username,
-                user_cfg.get("name", username),
-                user_cfg.get("role", "executive"),
+                bootstrap.get("name", username),
+                bootstrap.get("role", "executive"),
             )
             st.rerun()
 

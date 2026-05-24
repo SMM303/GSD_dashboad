@@ -11,6 +11,7 @@ st.set_page_config(page_title="Admin - GSD Dashboard", layout="wide")
 
 from auth.accounts import ACCOUNT_ROLES, ROLE_LABELS, create_account, list_accounts, reset_password, update_account
 from auth.audit import log_action
+from auth.fly_secrets import fly_available
 from auth.setup import get_display_name, get_user_role, get_username, require_auth
 from components.branding import inject_luxury_styles, render_sidebar_branding
 from components.freshness import render_freshness_badges
@@ -47,6 +48,26 @@ st.markdown(
     '<div class="prog-sub">Create accounts, assign roles, reset passwords, and disable access</div>',
     unsafe_allow_html=True,
 )
+
+# ── Credential-sync status banner ──────────────────────────────────────────
+_fly_sync = fly_available()
+if _fly_sync:
+    st.success(
+        "✅ **Fly.io credential sync enabled.** "
+        "Accounts you create or modify are automatically backed up to the "
+        "`AUTH_CREDENTIALS_JSON` Fly.io secret. The app can log users in from "
+        "that backup if Supabase is unreachable.",
+        icon=None,
+    )
+else:
+    st.info(
+        "ℹ️ **Fly.io credential sync is not configured.** "
+        "Accounts are stored in Supabase only. "
+        "To enable the Fly.io backup, add `FLY_API_TOKEN` and `FLY_APP_NAME` "
+        "to your Fly.io secrets (`flyctl secrets set …`).",
+        icon=None,
+    )
+
 st.divider()
 
 accounts = list_accounts()

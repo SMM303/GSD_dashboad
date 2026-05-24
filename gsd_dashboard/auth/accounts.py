@@ -1,8 +1,13 @@
 """
 Production account store.
 
-Admins manage accounts in Supabase. Secret-based credentials remain available
-as a bootstrap fallback so the first admin can sign in before accounts exist.
+Admins manage accounts in Supabase (primary). On every write the module also
+syncs to the Fly.io secret AUTH_CREDENTIALS_JSON via fly_secrets so that the
+app keeps working if Supabase is temporarily unreachable.
+
+Secret-based credentials (auth_credentials TOML) remain available as a final
+bootstrap fallback so the first admin can sign in before any managed accounts
+exist.
 """
 from __future__ import annotations
 
@@ -12,6 +17,8 @@ from typing import Any
 
 import bcrypt
 import streamlit as st
+
+from auth.fly_secrets import fly_available, remove_fly_user, sync_user, sync_user_fields
 
 
 ACCOUNT_ROLES = ("admin", "implementation", "executive", "oversight")
@@ -110,8 +117,11 @@ def list_accounts() -> list[dict[str, Any]]:
 
 def create_account(username: str, display_name: str, password: str, role: str, created_by: str) -> None:
     client = _get_supabase()
-    if not client:
-        raise RuntimeError("Supabase service role credentials are required to manage accounts.")
+    if not client and not fly_available():
+        raise RuntimeError(
+            "Either Supabase service role credentials or Fly.io credentials "
+            "(FLY_API_TOKEN + FLY_APP_NAME) are required to manage accounts."
+        )
 
     username = normalize_username(username)
     if not username:
@@ -121,42 +131,81 @@ def create_account(username: str, display_name: str, password: str, role: str, c
     if len(password) < 12:
         raise ValueError("Password must be at least 12 characters.")
 
+    display = display_name.strip() or username
+    pw_hash = hash_password(password)
     now = datetime.now(timezone.utc).isoformat()
-    client.table("app_users").insert({
-        "username": username,
-        "display_name": display_name.strip() or username,
-        "password_hash": hash_password(password),
-        "role": role,
-        "active": True,
-        "created_by": created_by,
-        "created_at": now,
-        "updated_at": now,
-    }).execute()
+
+    # --- Primary store: Supabase ---
+    if client:
+        client.table("app_users").insert({
+            "username": username,
+            "display_name": display,
+            "password_hash": pw_hash,
+            "role": role,
+            "active": True,
+            "created_by": created_by,
+            "created_at": now,
+            "updated_at": now,
+        }).execute()
+
+    # --- Backup store: Fly.io secret AUTH_CREDENTIALS_JSON ---
+    sync_user(
+        username,
+        display_name=display,
+        password_hash=pw_hash,
+        role=role,
+        active=True,
+    )
 
 
 def update_account(username: str, display_name: str, role: str, active: bool) -> None:
     client = _get_supabase()
-    if not client:
-        raise RuntimeError("Supabase service role credentials are required to manage accounts.")
+    if not client and not fly_available():
+        raise RuntimeError(
+            "Either Supabase service role credentials or Fly.io credentials "
+            "(FLY_API_TOKEN + FLY_APP_NAME) are required to manage accounts."
+        )
     if role not in ACCOUNT_ROLES:
         raise ValueError("Role is not valid.")
 
-    client.table("app_users").update({
-        "display_name": display_name.strip() or normalize_username(username),
-        "role": role,
-        "active": active,
-        "updated_at": datetime.now(timezone.utc).isoformat(),
-    }).eq("username", normalize_username(username)).execute()
+    display = display_name.strip() or normalize_username(username)
+
+    # --- Primary store: Supabase ---
+    if client:
+        client.table("app_users").update({
+            "display_name": display,
+            "role": role,
+            "active": active,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        }).eq("username", normalize_username(username)).execute()
+
+    # --- Backup store: Fly.io secret ---
+    sync_user_fields(
+        normalize_username(username),
+        display_name=display,
+        role=role,
+        active=active,
+    )
 
 
 def reset_password(username: str, password: str) -> None:
     client = _get_supabase()
-    if not client:
-        raise RuntimeError("Supabase service role credentials are required to manage accounts.")
+    if not client and not fly_available():
+        raise RuntimeError(
+            "Either Supabase service role credentials or Fly.io credentials "
+            "(FLY_API_TOKEN + FLY_APP_NAME) are required to manage accounts."
+        )
     if len(password) < 12:
         raise ValueError("Password must be at least 12 characters.")
 
-    client.table("app_users").update({
-        "password_hash": hash_password(password),
-        "updated_at": datetime.now(timezone.utc).isoformat(),
-    }).eq("username", normalize_username(username)).execute()
+    pw_hash = hash_password(password)
+
+    # --- Primary store: Supabase ---
+    if client:
+        client.table("app_users").update({
+            "password_hash": pw_hash,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        }).eq("username", normalize_username(username)).execute()
+
+    # --- Backup store: Fly.io secret ---
+    sync_user_fields(normalize_username(username), password_hash=pw_hash)
