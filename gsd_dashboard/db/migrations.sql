@@ -222,3 +222,63 @@ CREATE OR REPLACE VIEW issues_summary AS
   SELECT category, risk_level, status, COUNT(*) AS count
   FROM issues
   GROUP BY category, risk_level, status;
+
+-- ============================================================
+-- API privileges
+-- ============================================================
+-- RLS policies decide which rows each role may access, but Postgres still
+-- requires table-level privileges for the Supabase API roles.
+
+GRANT USAGE ON SCHEMA public TO authenticated, service_role;
+
+GRANT SELECT ON
+  phases,
+  milestones,
+  deliverables,
+  deliverable_status_history,
+  modules,
+  standards_mappings,
+  stakeholders,
+  risks,
+  risk_history,
+  issues,
+  kpi_snapshots,
+  audit_log,
+  etl_sync_log,
+  issues_summary
+TO authenticated, service_role;
+
+GRANT UPDATE ON
+  milestones,
+  deliverables,
+  modules,
+  stakeholders,
+  risks,
+  issues
+TO authenticated, service_role;
+
+GRANT INSERT ON
+  risk_history,
+  issues,
+  audit_log,
+  kpi_snapshots,
+  etl_sync_log
+TO authenticated, service_role;
+
+GRANT INSERT, UPDATE, DELETE ON
+  phases,
+  milestones,
+  deliverables,
+  deliverable_status_history,
+  modules,
+  standards_mappings,
+  stakeholders,
+  risks,
+  risk_history,
+  issues,
+  kpi_snapshots,
+  audit_log,
+  etl_sync_log
+TO service_role;
+
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO authenticated, service_role;
