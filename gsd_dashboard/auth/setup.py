@@ -10,6 +10,7 @@ DEMO_MODE = false : streamlit-authenticator with bcrypt-hashed credentials
 from __future__ import annotations
 
 import os
+import uuid
 
 import streamlit as st
 from typing import Optional, Tuple
@@ -132,8 +133,8 @@ def _demo_login_form() -> None:
 
 
 def _production_login_form() -> None:
-    """Uses streamlit-authenticator with bcrypt-hashed credentials."""
-    import streamlit_authenticator as stauth
+    """Use private bcrypt-hashed credentials from secrets or environment."""
+    import bcrypt
     import yaml
 
     try:
@@ -145,31 +146,30 @@ def _production_login_form() -> None:
         st.error("auth_credentials not found. Set AUTH_CREDENTIALS_YAML or use DEMO_MODE=true.")
         return
 
-    cookie = _secret("auth_cookie", {}) or {}
-    cookie_name = cookie.get("name") or os.environ.get("AUTH_COOKIE_NAME", "gsd_auth")
-    cookie_key = cookie.get("key") or os.environ.get("AUTH_COOKIE_KEY", "CHANGE_ME")
-    cookie_expiry = cookie.get("expiry_days") or int(os.environ.get("AUTH_COOKIE_EXPIRY_DAYS", "1"))
-    authenticator = stauth.Authenticate(
-        config["credentials"],
-        cookie_name,
-        cookie_key,
-        cookie_expiry,
-    )
+    users = config.get("credentials", {}).get("usernames", {})
 
-    authenticator.login()
+    with st.form("production_login"):
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        submit = st.form_submit_button("Login", width="content")
 
-    status = st.session_state.get("authentication_status")
-    if status:
-        import uuid
-        username = st.session_state.get("username", "")
-        user_cfg = config["credentials"]["usernames"].get(username, {})
-        st.session_state["authenticated"] = True
-        st.session_state["user_role"]     = user_cfg.get("role", "executive")
-        st.session_state["display_name"]  = st.session_state.get("name", username)
+    if submit:
+        username = username.strip().lower()
+        user_cfg = users.get(username)
+        hashed = str(user_cfg.get("password", "")) if user_cfg else ""
+        if user_cfg and bcrypt.checkpw(password.encode(), hashed.encode()):
+            st.session_state["authenticated"] = True
+            st.session_state["username"] = username
+            st.session_state["user_role"] = user_cfg.get("role", "executive")
+            st.session_state["display_name"] = user_cfg.get("name", username)
+            st.session_state.setdefault("session_id", str(uuid.uuid4()))
+            st.rerun()
+        else:
+            st.error("Incorrect username or password.")
+
+    if st.session_state.get("authenticated"):
         st.session_state.setdefault("session_id", str(uuid.uuid4()))
         st.rerun()
-    elif status is False:
-        st.error("Incorrect username or password.")
 
 
 # ---------------------------------------------------------------------------

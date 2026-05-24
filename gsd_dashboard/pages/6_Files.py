@@ -13,7 +13,7 @@ from auth.setup import require_auth, get_user_role, get_display_name, get_userna
 from auth.audit import log_action
 from components.branding import inject_luxury_styles, render_sidebar_branding
 from components.freshness import render_freshness_badges
-from data.file_store import get_download_bytes, list_uploads, save_upload
+from data.file_store import delete_upload, get_download_bytes, list_uploads, save_upload
 
 
 require_auth()
@@ -107,3 +107,18 @@ else:
             mime=selected_row.get("content_type") or "application/octet-stream",
             width="stretch",
         )
+
+    if role == "implementation":
+        st.markdown("#### Remove")
+        confirm = st.checkbox(
+            f"Confirm removal of {options[selected]}",
+            key=f"confirm_delete_{selected}",
+        )
+        if st.button("Remove selected file", disabled=not confirm, width="stretch"):
+            try:
+                delete_upload(selected)
+                log_action("delete_file", "file", selected)
+                st.success("File removed.")
+                st.rerun()
+            except Exception as exc:
+                st.error(f"Could not remove file: {exc}")

@@ -157,3 +157,18 @@ def get_download_bytes(stored_name: str) -> bytes | None:
         return client.storage.from_(_BUCKET).download(stored_name)
     except Exception:
         return None
+
+
+def delete_upload(stored_name: str) -> None:
+    if _is_demo():
+        path = _UPLOAD_DIR / stored_name
+        if path.exists():
+            path.unlink()
+        rows = [row for row in _load_manifest() if row.get("stored_name") != stored_name]
+        _save_manifest(rows)
+        return
+
+    client = _supabase()
+    if not client:
+        raise RuntimeError("Supabase is not configured.")
+    client.storage.from_(_BUCKET).remove([stored_name])
