@@ -27,6 +27,20 @@ All data is read from `data/programme_config.json` and persisted locally to `dat
 
 ---
 
+## Security scanning
+
+Trivy runs in GitHub Actions on every pull request and manual workflow dispatch. The Fly deploy workflow also runs the same filesystem and Docker image checks before deployment to `main`. Scans fail on high/critical vulnerabilities, secrets, and misconfigurations; pull request scans also upload SARIF results to GitHub code scanning.
+
+To run the same checks locally:
+
+```bash
+trivy fs --scanners vuln,secret,misconfig --severity HIGH,CRITICAL --ignore-unfixed gsd_dashboard
+docker build -t gsd-dashboard:local gsd_dashboard
+trivy image --scanners vuln,secret,misconfig --severity HIGH,CRITICAL --ignore-unfixed gsd-dashboard:local
+```
+
+---
+
 ## Project structure
 
 ```

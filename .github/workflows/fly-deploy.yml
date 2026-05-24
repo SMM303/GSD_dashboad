@@ -9,6 +9,8 @@ jobs:
   deploy:
     name: Deploy app
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     defaults:
       run:
         working-directory: gsd_dashboard
@@ -16,6 +18,32 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Scan filesystem with Trivy
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: gsd_dashboard
+          format: table
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          scanners: vuln,secret,misconfig
+          exit-code: "1"
+
+      - name: Build Docker image for Trivy
+        run: docker build -t gsd-dashboard:${{ github.sha }} .
+
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: gsd-dashboard:${{ github.sha }}
+          format: table
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          vuln-type: os,library
+          scanners: vuln,secret,misconfig
+          exit-code: "1"
+          skip-setup-trivy: true
 
       - name: Setup Fly
         uses: superfly/flyctl-actions/setup-flyctl@master

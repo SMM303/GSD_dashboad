@@ -1,0 +1,84 @@
+name: Trivy Security Scan
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  trivy:
+    name: Scan application and image
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate filesystem SARIF
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: gsd_dashboard
+          format: sarif
+          output: trivy-fs-results.sarif
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          scanners: vuln,secret,misconfig
+          exit-code: "0"
+
+      - name: Upload filesystem SARIF
+        uses: github/codeql-action/upload-sarif@v4
+        if: always()
+        with:
+          sarif_file: trivy-fs-results.sarif
+          category: trivy-filesystem
+
+      - name: Fail on filesystem findings
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: gsd_dashboard
+          format: table
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          scanners: vuln,secret,misconfig
+          exit-code: "1"
+          skip-setup-trivy: true
+
+      - name: Build Docker image
+        run: docker build -t gsd-dashboard:${{ github.sha }} gsd_dashboard
+
+      - name: Generate image SARIF
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: gsd-dashboard:${{ github.sha }}
+          format: sarif
+          output: trivy-image-results.sarif
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          vuln-type: os,library
+          scanners: vuln,secret,misconfig
+          exit-code: "0"
+          skip-setup-trivy: true
+
+      - name: Upload image SARIF
+        uses: github/codeql-action/upload-sarif@v4
+        if: always()
+        with:
+          sarif_file: trivy-image-results.sarif
+          category: trivy-image
+
+      - name: Fail on image findings
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: gsd-dashboard:${{ github.sha }}
+          format: table
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          vuln-type: os,library
+          scanners: vuln,secret,misconfig
+          exit-code: "1"
+          skip-setup-trivy: true
