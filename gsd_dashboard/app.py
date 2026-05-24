@@ -2,7 +2,21 @@
 Entry point — handles authentication and redirects to the Timeline page.
 Run with:  streamlit run app.py
 """
+import logging
+import os
 import streamlit as st
+
+# ---------------------------------------------------------------------------
+# Logging — configured once here; all module loggers inherit this format.
+# Output goes to stdout so Fly.io captures it in the log drain.
+# ---------------------------------------------------------------------------
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)-8s %(name)s %(message)s",
+    datefmt="%Y-%m-%dT%H:%M:%SZ",
+    force=True,  # overrides any prior basicConfig (e.g. from imported libs)
+)
+_log = logging.getLogger("app")
 
 st.set_page_config(
     page_title="IOM GSD Programme Dashboard",

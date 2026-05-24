@@ -18,6 +18,9 @@ from auth.audit import log_action
 from components.branding import inject_luxury_styles, render_sidebar_branding
 from components.freshness import render_freshness_badges
 from components.charts import build_sparkline
+from utils.errors import get_logger
+
+_log = get_logger(__name__)
 from data.queries import (
     fetch_kpis, fetch_deliverables, fetch_stakeholders,
     fetch_modules, fetch_issues,
@@ -270,4 +273,5 @@ if role in ("admin", "implementation") and st.sidebar.checkbox("Show audit log",
         else:
             st.info("No audit entries yet.")
     except Exception as e:
-        st.warning(f"Could not load audit log: {e}")
+        _log.error("Could not load audit log: %s", e, exc_info=True)
+        st.warning("Audit log is temporarily unavailable.")

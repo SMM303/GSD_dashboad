@@ -15,12 +15,15 @@ silently skipped):
 from __future__ import annotations
 
 import json
+import logging
 import os
 import urllib.error
 import urllib.request
 from typing import Any
 
 import streamlit as st
+
+_log = logging.getLogger(__name__)
 
 _FLY_API = "https://api.machines.dev/v1"
 
@@ -61,8 +64,12 @@ def _post(url: str, body: Any, *, timeout: int = 15) -> None:
     try:
         urllib.request.urlopen(req, timeout=timeout)
     except urllib.error.HTTPError as exc:
+        # Log full detail; raise a safe message for the UI layer.
+        detail = exc.read().decode(errors="replace")
+        _log.error("Fly.io API error %s for %s: %s", exc.code, url, detail)
         raise RuntimeError(
-            f"Fly.io API {exc.code}: {exc.read().decode(errors='replace')}"
+            "Could not sync credentials to Fly.io. "
+            "Check server logs for details."
         ) from exc
 
 

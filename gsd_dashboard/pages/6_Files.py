@@ -14,6 +14,9 @@ from auth.audit import log_action
 from components.branding import inject_luxury_styles, render_sidebar_branding
 from components.freshness import render_freshness_badges
 from data.file_store import delete_upload, get_download_bytes, list_uploads, save_upload
+from utils.errors import get_logger, ui_error
+
+_log = get_logger(__name__)
 
 
 require_auth()
@@ -64,13 +67,15 @@ if role in ("admin", "implementation"):
                     saved.append(record["name"])
                     log_action("upload_file", "file", record["stored_name"])
                 except Exception as exc:
-                    failed.append(f"{upload.name}: {exc}")
+                    _log.error("Upload failed for %r: %s", upload.name, exc, exc_info=True)
+                    failed.append(upload.name)
             if saved:
                 st.success(f"Uploaded {len(saved)} file(s).")
             if failed:
-                st.error("Some files could not be uploaded.")
-                for message in failed:
-                    st.caption(message)
+                st.error(
+                    f"{len(failed)} file(s) could not be uploaded: "
+                    + ", ".join(failed)
+                )
             st.rerun()
 else:
     st.info("File uploads are available to implementation users. Existing files are visible below.")
@@ -123,4 +128,4 @@ else:
                 st.success("File removed.")
                 st.rerun()
             except Exception as exc:
-                st.error(f"Could not remove file: {exc}")
+                ui_error(exc, context="delete_file", logger=_log)

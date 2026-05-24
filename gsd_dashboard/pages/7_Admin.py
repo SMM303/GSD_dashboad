@@ -15,6 +15,9 @@ from auth.fly_secrets import fly_available
 from auth.setup import get_display_name, get_user_role, get_username, require_auth
 from components.branding import inject_luxury_styles, render_sidebar_branding
 from components.freshness import render_freshness_badges
+from utils.errors import get_logger, ui_error
+
+_log = get_logger(__name__)
 
 
 require_auth()
@@ -117,7 +120,7 @@ with create_col:
             st.success("Account created.")
             st.rerun()
         except Exception as exc:
-            st.error(str(exc))
+            ui_error(exc, context="create_account", logger=_log)
 
 with manage_col:
     st.subheader("Manage Existing Account")
@@ -146,7 +149,7 @@ with manage_col:
                 st.success("Account updated.")
                 st.rerun()
             except Exception as exc:
-                st.error(str(exc))
+                ui_error(exc, context="update_account", logger=_log)
 
         with st.form("reset_password_form"):
             replacement_password = st.text_input("New temporary password", type="password")
@@ -158,4 +161,4 @@ with manage_col:
                 log_action("reset_account_password", "user", selected)
                 st.success("Password reset.")
             except Exception as exc:
-                st.error(str(exc))
+                ui_error(exc, context="reset_password", logger=_log)
