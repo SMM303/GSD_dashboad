@@ -9,6 +9,8 @@ DEMO_MODE = false : streamlit-authenticator with bcrypt-hashed credentials
 """
 from __future__ import annotations
 
+import os
+
 import streamlit as st
 from typing import Optional, Tuple
 
@@ -43,9 +45,10 @@ DEMO_USERS: dict[str, dict] = {
 
 def _is_demo() -> bool:
     try:
-        return str(st.secrets.get("DEMO_MODE", "true")).lower() in ("true", "1", "yes")
+        value = st.secrets.get("DEMO_MODE", os.environ.get("DEMO_MODE", "true"))
+        return str(value).lower() in ("true", "1", "yes")
     except Exception:
-        return True
+        return str(os.environ.get("DEMO_MODE", "true")).lower() in ("true", "1", "yes")
 
 
 # ---------------------------------------------------------------------------
@@ -131,18 +134,23 @@ def _production_login_form() -> None:
     import yaml
 
     try:
-        raw_config = st.secrets["auth_credentials"]
+        raw_config = st.secrets.get("auth_credentials") or os.environ.get("AUTH_CREDENTIALS_YAML")
+        if not raw_config:
+            raise KeyError("auth_credentials")
         config     = yaml.safe_load(raw_config) if isinstance(raw_config, str) else raw_config
     except Exception:
-        st.error("auth_credentials not found in st.secrets. Set DEMO_MODE=true for local use.")
+        st.error("auth_credentials not found. Set AUTH_CREDENTIALS_YAML or use DEMO_MODE=true.")
         return
 
     cookie = st.secrets.get("auth_cookie", {})
+    cookie_name = cookie.get("name") or os.environ.get("AUTH_COOKIE_NAME", "gsd_auth")
+    cookie_key = cookie.get("key") or os.environ.get("AUTH_COOKIE_KEY", "CHANGE_ME")
+    cookie_expiry = cookie.get("expiry_days") or int(os.environ.get("AUTH_COOKIE_EXPIRY_DAYS", "1"))
     authenticator = stauth.Authenticate(
         config["credentials"],
-        cookie.get("name", "gsd_auth"),
-        cookie.get("key",  "CHANGE_ME"),
-        cookie.get("expiry_days", 1),
+        cookie_name,
+        cookie_key,
+        cookie_expiry,
     )
 
     authenticator.login()

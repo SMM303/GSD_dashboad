@@ -12,9 +12,8 @@ from __future__ import annotations
 import json
 import os
 from datetime import date
-from functools import lru_cache
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 import pandas as pd
 import streamlit as st
@@ -48,21 +47,142 @@ STAKEHOLDER_COLS_BY_ROLE: dict[str, list[str]] = {
 
 def _is_demo() -> bool:
     try:
-        return str(st.secrets.get("DEMO_MODE", "true")).lower() in ("true", "1", "yes")
+        value = st.secrets.get("DEMO_MODE", os.environ.get("DEMO_MODE", "true"))
+        return str(value).lower() in ("true", "1", "yes")
     except Exception:
-        return True
+        return str(os.environ.get("DEMO_MODE", "true")).lower() in ("true", "1", "yes")
 
 
 def _get_supabase():
     try:
         from supabase import create_client
         url = st.secrets.get("SUPABASE_URL") or os.environ.get("SUPABASE_URL", "")
-        key = st.secrets.get("SUPABASE_ANON_KEY") or os.environ.get("SUPABASE_ANON_KEY", "")
+        key = (
+            st.secrets.get("SUPABASE_SERVICE_ROLE_KEY")
+            or os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")
+            or st.secrets.get("SUPABASE_ANON_KEY")
+            or os.environ.get("SUPABASE_ANON_KEY", "")
+        )
         if url and key:
             return create_client(url, key)
     except Exception:
         pass
     return None
+
+
+def _fetch_table(client: Any, table: str, select: str = "*") -> list[dict]:
+    try:
+        return client.table(table).select(select).execute().data or []
+    except Exception:
+        return []
+
+
+def _by_id(rows: list[dict]) -> dict:
+    return {row["id"]: row for row in rows if row.get("id") is not None}
+
+
+def _merge_rows_by_id(config_rows: list[dict], live_rows: list[dict]) -> list[dict]:
+    live_by_id = _by_id(live_rows)
+    merged_rows = []
+    seen = set()
+    for row in config_rows:
+        merged = dict(row)
+        live = live_by_id.get(row.get("id"))
+        if live:
+            merged.update({k: v for k, v in live.items() if v is not None})
+            seen.add(row.get("id"))
+        merged_rows.append(merged)
+    for row in live_rows:
+        if row.get("id") not in seen:
+            merged_rows.append(row)
+    return merged_rows
+
+
+def _load_supabase_payload() -> dict:
+    """Merge static programme metadata with live Supabase table state."""
+    with open(_CONFIG_PATH) as f:
+        raw = json.load(f)
+
+    client = _get_supabase()
+    if not client:
+        return raw
+
+    raw["phases"] = _merge_rows_by_id(raw.get("phases", []), _fetch_table(client, "phases"))
+    raw["milestones"] = _merge_rows_by_id(raw.get("milestones", []), _fetch_table(client, "milestones"))
+
+    deliverables = _merge_rows_by_id(raw.get("deliverables", []), _fetch_table(client, "deliverables"))
+    history_rows = _fetch_table(client, "deliverable_status_history")
+    history_by_deliverable: dict[str, list[dict]] = {}
+    for row in history_rows:
+        deliverable_id = row.get("deliverable_id")
+        if deliverable_id:
+            history_by_deliverable.setdefault(deliverable_id, []).append({
+                "status": row.get("status"),
+                "changed_at": row.get("changed_at"),
+                "changed_by": row.get("changed_by"),
+            })
+    for row in deliverables:
+        if row.get("id") in history_by_deliverable:
+            row["status_history"] = history_by_deliverable[row["id"]]
+    raw["deliverables"] = deliverables
+
+    modules = _merge_rows_by_id(raw.get("modules", []), _fetch_table(client, "modules"))
+    standards_rows = _fetch_table(client, "standards_mappings")
+    standards_by_module: dict[str, list[str]] = {}
+    for row in standards_rows:
+        module_id = row.get("module_id")
+        standard = row.get("standard") or row.get("source")
+        if module_id and standard:
+            standards_by_module.setdefault(module_id, []).append(standard)
+    for row in modules:
+        if row.get("id") in standards_by_module:
+            row["standards_mapped"] = standards_by_module[row["id"]]
+    raw["modules"] = modules
+
+    stakeholder_rows = _fetch_table(client, "stakeholders")
+    if stakeholder_rows:
+        raw["stakeholders"] = stakeholder_rows
+
+    risks = _merge_rows_by_id(raw.get("risks", []), _fetch_table(client, "risks"))
+    risk_history_rows = _fetch_table(client, "risk_history")
+    risk_history_by_risk: dict[str, list[dict]] = {}
+    for row in risk_history_rows:
+        risk_id = row.get("risk_id")
+        if risk_id:
+            risk_history_by_risk.setdefault(risk_id, []).append({
+                "date": row.get("date"),
+                "likelihood": row.get("likelihood"),
+                "impact": row.get("impact"),
+                "status": row.get("status"),
+            })
+    for row in risks:
+        if row.get("id") in risk_history_by_risk:
+            row["history"] = risk_history_by_risk[row["id"]]
+    raw["risks"] = risks
+
+    issue_rows = _fetch_table(client, "issues")
+    if issue_rows:
+        raw["issues"] = issue_rows
+
+    snapshots = _fetch_table(client, "kpi_snapshots")
+    snapshots_by_kpi: dict[str, list[dict]] = {}
+    for row in snapshots:
+        kpi_id = row.get("kpi_id")
+        if kpi_id:
+            snapshots_by_kpi.setdefault(kpi_id, []).append(row)
+    for kpi in raw.get("kpis", []):
+        points = sorted(
+            snapshots_by_kpi.get(kpi.get("id"), []),
+            key=lambda row: row.get("snapshot_date") or "",
+        )
+        if points:
+            kpi["trend"] = [
+                {"date": point.get("snapshot_date"), "value": point.get("value")}
+                for point in points
+            ]
+            kpi["current_value"] = points[-1].get("value")
+
+    return raw
 
 
 # ---------------------------------------------------------------------------
@@ -76,8 +196,7 @@ def load_payload() -> ProgrammePayload:
         from data.demo_store import get_full_payload
         raw = get_full_payload()
     else:
-        with open(_CONFIG_PATH) as f:
-            raw = json.load(f)
+        raw = _load_supabase_payload()
     return ProgrammePayload.model_validate(raw)
 
 

@@ -90,7 +90,7 @@ Paste the output into `secrets.toml` under `[auth_credentials]`.
 ### 4. Google Sheets
 
 Create a spreadsheet with tabs: **Issue Log**, **Stakeholder Map**, **Standards Reference**, **Task Tracker**.  
-Share it with the service account email from your GCP project.
+Share it with the service account email from GCP project.
 
 ### 5. Deploy to Fly.io
 

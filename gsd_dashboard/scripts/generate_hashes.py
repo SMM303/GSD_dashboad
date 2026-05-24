@@ -2,7 +2,7 @@
 Generate bcrypt password hashes for streamlit-authenticator.
 Run once:  python scripts/generate_hashes.py
 
-Paste the output into your .streamlit/secrets.toml under [auth_credentials].
+Paste the output into .streamlit/secrets.toml under [auth_credentials].
 """
 import getpass
 

@@ -4,6 +4,7 @@ the backing store (demo_store JSON or Supabase audit_log table).
 """
 from __future__ import annotations
 
+import os
 import uuid
 from datetime import datetime, timezone
 
@@ -12,9 +13,10 @@ import streamlit as st
 
 def _is_demo() -> bool:
     try:
-        return str(st.secrets.get("DEMO_MODE", "true")).lower() in ("true", "1", "yes")
+        value = st.secrets.get("DEMO_MODE", os.environ.get("DEMO_MODE", "true"))
+        return str(value).lower() in ("true", "1", "yes")
     except Exception:
-        return True
+        return str(os.environ.get("DEMO_MODE", "true")).lower() in ("true", "1", "yes")
 
 
 def log_action(action: str, record_type: str, record_id: str = "") -> None:

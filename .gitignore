@@ -1,0 +1,5 @@
+gsd_dashboard/.venv/
+gsd_dashboard/.streamlit/secrets.toml
+gsd_dashboard/data/uploads/
+__pycache__/
+*.py[cod]

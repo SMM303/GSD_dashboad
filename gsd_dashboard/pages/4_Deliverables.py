@@ -37,6 +37,7 @@ with st.sidebar:
     st.page_link("pages/3_Risk_Heat_Map.py",          label="⚠️   Risk Heat Map")
     st.page_link("pages/4_Deliverables.py",           label="📋  Deliverables")
     st.page_link("pages/5_KPI_Dashboard.py",          label="📊  KPI Dashboard")
+    st.page_link("pages/6_Files.py",                  label="📁  Files")
     render_freshness_badges()
 
 log_action("view_deliverables", "page", "deliverables")

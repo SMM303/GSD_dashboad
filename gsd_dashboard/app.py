@@ -36,6 +36,7 @@ def main():
         st.page_link("pages/3_Risk_Heat_Map.py",      label="⚠️   Risk Heat Map",      icon=None)
         st.page_link("pages/4_Deliverables.py",       label="📋  Deliverables",        icon=None)
         st.page_link("pages/5_KPI_Dashboard.py",      label="📊  KPI Dashboard",       icon=None)
+        st.page_link("pages/6_Files.py",              label="📁  Files",               icon=None)
         st.divider()
         if st.button("Sign Out", width="stretch"):
             log_action("logout", "session")
