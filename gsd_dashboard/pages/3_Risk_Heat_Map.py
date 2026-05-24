@@ -10,7 +10,7 @@ Audit logged on every view and every update.
 """
 import streamlit as st
 
-st.set_page_config(page_title="Risk Heat Map · GSD Dashboard", layout="wide")
+st.set_page_config(page_title="Risk Heat Map - GSD Dashboard", layout="wide")
 
 from auth.setup import require_auth, get_user_role, get_display_name
 from auth.audit import log_action
@@ -43,7 +43,7 @@ log_action("view_risk_register", "page", "risk_heatmap")
 # ── Header ───────────────────────────────────────────────────────────────────
 st.markdown(
     '<div class="prog-title">Risk Register</div>'
-    '<div class="prog-sub">Likelihood × Impact heat map · Category colour · Status symbol · Mitigation detail</div>',
+    '<div class="prog-sub">Likelihood and impact heat map, category colour, status, and mitigation detail</div>',
     unsafe_allow_html=True,
 )
 st.divider()
@@ -61,7 +61,7 @@ c1, c2, c3, c4 = st.columns(4)
 c1.metric("Active Risks",    active)
 c2.metric("Escalated",       escalated, delta_color="inverse")
 c3.metric("Mitigated",       mitigated)
-c4.metric("Score ≥ 12",      high_score, delta_color="inverse")
+c4.metric("Score 12 and above",      high_score, delta_color="inverse")
 
 # ── Heat Map ──────────────────────────────────────────────────────────────────
 col_chart, col_legend = st.columns([3, 1])
@@ -71,7 +71,7 @@ with col_chart:
     st.plotly_chart(fig, width="stretch")
 
 with col_legend:
-    st.markdown("**Legend — Category**")
+    st.markdown("**Legend: Category**")
     for cat, colour in RISK_CAT_COLOURS.items():
         st.markdown(
             f'<span style="display:inline-block;width:12px;height:12px;'
@@ -80,9 +80,9 @@ with col_legend:
             unsafe_allow_html=True,
         )
     st.markdown("---")
-    st.markdown("**Legend — Status**")
-    for sym, label in [("●","Active"), ("■","Mitigated"), ("✕","Escalated"), ("◆","Closed")]:
-        st.markdown(f"{sym} {label}")
+    st.markdown("**Legend: Status**")
+    for label in ["Active", "Mitigated", "Escalated", "Closed"]:
+        st.markdown(label)
     st.markdown("---")
     st.markdown("**Zone colours**")
     st.markdown("Low risk (score <= 6)")
@@ -125,7 +125,7 @@ escalated_risks = risks_df[risks_df["status"] == "escalated"]
 if not escalated_risks.empty:
     st.error(f"{len(escalated_risks)} escalated risk(s). Immediate attention required.")
     for _, r in escalated_risks.iterrows():
-        with st.expander(f"{r['id']} — {r['description']}"):
+        with st.expander(f"{r['id']} - {r['description']}"):
             st.markdown(f"**Escalation trigger:** {r['escalation_trigger']}")
             st.markdown(f"**Mitigation:** {r['mitigation']}")
             st.markdown(f"**Owner:** {r['owner']}")
@@ -140,21 +140,21 @@ if role in ("admin", "implementation"):
     )
 
     with st.form("risk_update_form"):
-        opts    = {r["id"]: f"{r['id']} — {str(r['description'])[:55]}" for _, r in risks_df.iterrows()}
+        opts    = {r["id"]: f"{r['id']} - {str(r['description'])[:55]}" for _, r in risks_df.iterrows()}
         sel_id  = st.selectbox("Risk", list(opts.keys()), format_func=lambda x: opts[x])
 
         sel_row = risks_df[risks_df["id"] == sel_id].iloc[0]
 
         col_a, col_b = st.columns(2)
         with col_a:
-            likelihood_labels = {1:"1 – Rare", 2:"2 – Unlikely", 3:"3 – Possible", 4:"4 – Likely", 5:"5 – Almost Certain"}
+            likelihood_labels = {1:"1 - Rare", 2:"2 - Unlikely", 3:"3 - Possible", 4:"4 - Likely", 5:"5 - Almost Certain"}
             new_l = st.select_slider(
                 "Likelihood", options=[1,2,3,4,5],
                 value=int(sel_row["likelihood"]),
                 format_func=lambda x: likelihood_labels[x],
             )
         with col_b:
-            impact_labels = {1:"1 – Negligible", 2:"2 – Minor", 3:"3 – Moderate", 4:"4 – Significant", 5:"5 – Critical"}
+            impact_labels = {1:"1 - Negligible", 2:"2 - Minor", 3:"3 - Moderate", 4:"4 - Significant", 5:"5 - Critical"}
             new_i = st.select_slider(
                 "Impact", options=[1,2,3,4,5],
                 value=int(sel_row["impact"]),
@@ -166,7 +166,7 @@ if role in ("admin", "implementation"):
             index=["active","mitigated","escalated","closed"].index(sel_row["status"]),
         )
         new_score = new_l * new_i
-        st.markdown(f"**New risk score: {new_score}** (likelihood {new_l} × impact {new_i})")
+        st.markdown(f"**New risk score: {new_score}** (likelihood {new_l} and impact {new_i})")
 
         if st.form_submit_button("Save Risk Update"):
             write_risk_update(

@@ -119,7 +119,7 @@ def build_timeline_figure(
             text=p["name"],
             textposition="inside",
             insidetextanchor="middle",
-            hovertemplate=f"<b>{p['name']}</b><br>Status: {p['status']}<br>Weeks {p['start_week']}–{p['end_week']}<extra></extra>",
+            hovertemplate=f"<b>{p['name']}</b><br>Status: {p['status']}<br>Weeks {p['start_week']} to {p['end_week']}<extra></extra>",
             showlegend=False,
         ))
 
@@ -163,8 +163,8 @@ def build_timeline_figure(
             name=label,
         ))
 
-    _add_milestones(completed_ms,   GREEN, "circle", "Milestone — complete")
-    _add_milestones(outstanding_ms, GREY,  "circle-open", "Milestone — pending")
+    _add_milestones(completed_ms,   GREEN, "circle", "Milestone complete")
+    _add_milestones(outstanding_ms, GREY,  "circle-open", "Milestone pending")
 
     # Today line
     _add_today_marker(fig, annotation_position="top right")
@@ -266,7 +266,7 @@ def build_risk_heatmap(risks_df: pd.DataFrame) -> go.Figure:
 
     fig.update_layout(
         **_base_layout(
-            title="Risk Register — Likelihood × Impact",
+            title="Risk Register - Likelihood and Impact",
             height=500,
             xaxis_title="Impact",
             yaxis_title="Likelihood",
@@ -335,7 +335,7 @@ def build_deliverables_gantt(deliverables_df: pd.DataFrame, programme_start: dat
             base=[start_ts.timestamp() * 1000],
             orientation="h",
             marker=dict(color=colour, opacity=0.8, line=dict(width=0)),
-            text=f"{d['id']} — {d['status'].replace('_',' ').title()}",
+            text=f"{d['id']} - {d['status'].replace('_',' ').title()}",
             textposition="inside",
             hovertemplate=(
                 f"<b>{d['name']}</b><br>"
@@ -405,7 +405,7 @@ def build_engagement_radar(stakeholders_df: pd.DataFrame) -> go.Figure:
         "GSD_leadership":        "GSD Leadership",
         "GSD_academy":           "GSD Academy",
         "GSD_operational":       "GSD Operations",
-        "GSD_legal_it":          "GSD Legal/IT",
+        "GSD_legal_it":          "GSD Legal and IT",
         "IOM":                   "IOM",
         "national_partner":      "National Partners",
         "international_partner": "Intl Partners",

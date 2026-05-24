@@ -162,8 +162,8 @@ def render_login_page() -> None:
     """Render the login screen and set session state on success."""
     col_l, col_m, col_r = st.columns([1, 1.2, 1])
     with col_m:
-        st.markdown('<div class="login-header">IOM Lebanon / GSD</div>', unsafe_allow_html=True)
-        st.markdown('<div class="login-sub">Curriculum Development Consultancy — Programme Dashboard</div>', unsafe_allow_html=True)
+        st.markdown('<div class="login-header">IOM Lebanon GSD</div>', unsafe_allow_html=True)
+        st.markdown('<div class="login-sub">Curriculum Development Consultancy Programme Dashboard</div>', unsafe_allow_html=True)
         if st.session_state.pop("session_expired", False):
             st.warning("Your session expired for security. Please sign in again.")
 
@@ -176,10 +176,10 @@ def render_login_page() -> None:
 def _demo_login_form() -> None:
     st.info("Demo mode - use the credentials below.")
     st.caption(
-        "**saleh.mansour** / consultant123 (Implementation)  \n"
-        "**iom.pm** / pm123 (Implementation - IBG PM)  \n"
-        "**iom.hoo** / hoo123 (Executive)  \n"
-        "**iom.oversight** / oversight123 (Oversight)"
+        "**saleh.mansour**, Password: consultant123, Implementation  \n"
+        "**iom.pm**, Password: pm123, Implementation, IBG PM  \n"
+        "**iom.hoo**, Password: hoo123, Executive  \n"
+        "**iom.oversight**, Password: oversight123, Oversight"
     )
 
     with st.form("demo_login"):

@@ -287,7 +287,7 @@ def render_sidebar_branding(display_name: str, role: str) -> None:
     with st.sidebar:
         st.markdown(
             '<div class="sidebar-brand">'
-            '<div class="sidebar-title">IOM Lebanon · GSD</div>'
+            '<div class="sidebar-title">IOM Lebanon GSD</div>'
             '<div class="sidebar-sub">Curriculum Development Consultancy</div>'
             '</div>',
             unsafe_allow_html=True,

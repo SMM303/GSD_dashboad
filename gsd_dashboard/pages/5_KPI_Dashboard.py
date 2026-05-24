@@ -9,7 +9,7 @@ Audit logged on every view.
 """
 import streamlit as st
 
-st.set_page_config(page_title="KPI Dashboard · GSD Dashboard", layout="wide")
+st.set_page_config(page_title="KPI Dashboard - GSD Dashboard", layout="wide")
 
 import pandas as pd
 
@@ -48,7 +48,7 @@ log_action("view_kpi_dashboard", "page", "kpi_dashboard")
 # ── Header ────────────────────────────────────────────────────────────────────
 st.markdown(
     '<div class="prog-title">KPI Dashboard</div>'
-    '<div class="prog-sub">TOR §7 performance indicators · Live calculations · Trend sparklines</div>',
+    '<div class="prog-sub">TOR section 7 performance indicators, live calculations, and trend sparklines</div>',
     unsafe_allow_html=True,
 )
 st.divider()
@@ -111,7 +111,7 @@ kpi_meta = [
         "target":     100.0,
         "label":      f"{kpi001_value:.1f}%",
         "help":       "TOR §7: Effective coordination with IOM, GSD, and relevant stakeholders. "
-                      f"{confirmed_cats}/{TOTAL_CATEGORIES} actor categories have at least one confirmed consultation.",
+                      f"{confirmed_cats} of {TOTAL_CATEGORIES} actor categories have at least one confirmed consultation.",
         "delta_invert": False,
     },
     {
@@ -133,7 +133,7 @@ kpi_meta = [
         "target":     100.0,
         "label":      f"{kpi003_value:.1f}%",
         "help":       "TOR §7: High-quality materials aligned with IOM IBG framework. "
-                      f"{aligned_count}/10 modules at standards_aligned or finalized status.",
+                      f"{aligned_count} of 10 modules at standards aligned or finalized status.",
         "delta_invert": False,
     },
     {
@@ -143,7 +143,7 @@ kpi_meta = [
         "unit":       "count",
         "target":     0,
         "label":      str(kpi004_value),
-        "help":       "Issue log — count of issues with status = open. Target is zero open issues.",
+        "help":       "Issue log count of issues with status set to open. Target is zero open issues.",
         "delta_invert": True,
     },
     {
@@ -153,7 +153,7 @@ kpi_meta = [
         "unit":       "percent",
         "target":     100.0,
         "label":      f"{kpi005_value:.1f}%",
-        "help":       f"{finalized_count}/10 modules at finalized status.",
+        "help":       f"{finalized_count} of 10 modules at finalized status.",
         "delta_invert": False,
     },
 ]
@@ -197,13 +197,13 @@ for col, kpi in zip(spark_cols, kpi_meta):
 st.divider()
 
 # ── TOR Performance Indicator detail ──────────────────────────────────────────
-st.subheader("TOR §7 Performance Indicators")
+st.subheader("TOR Section 7 Performance Indicators")
 
 pi_data = [
     {
         "Indicator": "Stakeholder Engagement Effectiveness",
         "TOR Text":  "Effective coordination and engagement with IOM, GSD, and relevant national and international stakeholders throughout the curriculum development process.",
-        "Measure":   "% of defined actor categories with ≥1 confirmed consultation",
+        "Measure":   "% of defined actor categories with at least 1 confirmed consultation",
         "Current":   f"{kpi001_value:.1f}%",
         "Target":    "100%",
     },
@@ -227,7 +227,7 @@ for pi in pi_data:
     with st.expander(pi["Indicator"]):
         st.markdown(f"**TOR language:** *{pi['TOR Text']}*")
         st.markdown(f"**Measurement approach:** {pi['Measure']}")
-        st.markdown(f"**Current:** {pi['Current']}  ·  **Target:** {pi['Target']}")
+        st.markdown(f"**Current:** {pi['Current']}, **Target:** {pi['Target']}")
 
 # ── Deliverable timeliness detail ─────────────────────────────────────────────
 if role in ("implementation", "oversight", "executive"):
@@ -238,11 +238,11 @@ if role in ("implementation", "oversight", "executive"):
     for _, d in deliverables_df.iterrows():
         variance = d["variance_days"]
         timeline_data.append({
-            "Deliverable": f"{d['id']} — {d['name']}",
+            "Deliverable": f"{d['id']} - {d['name']}",
             "Due Date":    d["due_date"],
             "Status":      d["status"],
             "Days Remaining": d["days_to_deadline"],
-            "Variance (days)": variance if pd.notna(variance) else "—",
+            "Variance (days)": variance if pd.notna(variance) else "Not available",
             "Payment %":   f"{d['payment_pct']:.0f}%",
         })
 

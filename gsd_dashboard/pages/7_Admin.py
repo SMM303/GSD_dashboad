@@ -7,7 +7,7 @@ accounts, and reset passwords.
 import pandas as pd
 import streamlit as st
 
-st.set_page_config(page_title="Admin · GSD Dashboard", layout="wide")
+st.set_page_config(page_title="Admin - GSD Dashboard", layout="wide")
 
 from auth.accounts import ACCOUNT_ROLES, ROLE_LABELS, create_account, list_accounts, reset_password, update_account
 from auth.audit import log_action
@@ -44,7 +44,7 @@ log_action("view_account_admin", "page", "admin")
 
 st.markdown(
     '<div class="prog-title">Account Administration</div>'
-    '<div class="prog-sub">Create accounts · Assign roles · Reset passwords · Disable access</div>',
+    '<div class="prog-sub">Create accounts, assign roles, reset passwords, and disable access</div>',
     unsafe_allow_html=True,
 )
 st.divider()

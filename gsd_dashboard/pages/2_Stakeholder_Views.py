@@ -11,7 +11,7 @@ Includes the engagement radar chart and a consultation update form
 """
 import streamlit as st
 
-st.set_page_config(page_title="Stakeholder Views · GSD Dashboard", layout="wide")
+st.set_page_config(page_title="Stakeholder Views - GSD Dashboard", layout="wide")
 
 import pandas as pd
 
@@ -48,7 +48,7 @@ log_action("view_stakeholder_map", "page", "stakeholder_views")
 
 st.markdown(
     '<div class="prog-title">Stakeholder Views</div>'
-    '<div class="prog-sub">Engagement map · Consultation status · Access tracking</div>',
+    '<div class="prog-sub">Engagement map, consultation status, and access tracking</div>',
     unsafe_allow_html=True,
 )
 st.divider()
@@ -68,7 +68,7 @@ if "actor_category" in stakeholders_df.columns and "access_status" in stakeholde
 engagement_pct = round(confirmed_cats / TOTAL_CATEGORIES * 100, 1)
 
 c1, c2, c3, c4 = st.columns(4)
-c1.metric("Categories engaged",   f"{confirmed_cats} / {TOTAL_CATEGORIES}")
+c1.metric("Categories engaged",   f"{confirmed_cats} of {TOTAL_CATEGORIES}")
 c2.metric("Engagement %",          f"{engagement_pct}%")
 c3.metric("Total stakeholders",   len(stakeholders_df))
 pending = int((stakeholders_df.get("access_status", pd.Series([])) == "pending").sum()) if "access_status" in stakeholders_df.columns else 0
@@ -97,7 +97,7 @@ with col_table:
 
     # Column display labels
     col_labels = {
-        "org_unit":            "Organisation / Unit",
+        "org_unit":            "Organisation and Unit",
         "contact_name":        "Contact Name",
         "contact_title":       "Title",
         "actor_category":      "Category",
@@ -158,7 +158,7 @@ if role in ("implementation",):
     if not open_issues.empty:
         st.subheader("Resolve an Issue")
         with st.form("resolve_issue_form"):
-            opts   = {int(r["id"]): f"#{r['id']} — {str(r['description'])[:60]}" for _, r in open_issues.iterrows()}
+            opts   = {int(r["id"]): f"#{r['id']} - {str(r['description'])[:60]}" for _, r in open_issues.iterrows()}
             sel_id = st.selectbox("Select issue", list(opts.keys()), format_func=lambda x: opts[x])
             new_status = st.selectbox("New status", ["resolved", "escalated"])
             if st.form_submit_button("Update Issue"):

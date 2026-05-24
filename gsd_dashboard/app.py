@@ -5,7 +5,7 @@ Run with:  streamlit run app.py
 import streamlit as st
 
 st.set_page_config(
-    page_title="IOM/GSD Programme Dashboard",
+    page_title="IOM GSD Programme Dashboard",
     page_icon="GSD",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -51,7 +51,7 @@ def main():
 
     st.markdown(
         f'<div class="prog-title">{prog["title"]}</div>'
-        f'<div class="prog-sub">{prog["org"]} · {prog["unit"]} · {prog["duty_station"]} · '
+        f'<div class="prog-sub">{prog["org"]}, {prog["unit"]}, {prog["duty_station"]}, '
         f'Start: {start_date}</div>',
         unsafe_allow_html=True,
     )
@@ -74,7 +74,7 @@ def main():
     ]["days_to_deadline"].min()) if not df_del.empty else 0
 
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Deliverables",           f"{submitted} / {total} submitted")
+    c1.metric("Deliverables",           f"{submitted} of {total} submitted")
     c2.metric("Approved",               approved)
     c3.metric("Overdue",                overdue,   delta_color="inverse")
     c4.metric("Days to next deadline",  days_left, delta_color="normal" if days_left >= 0 else "inverse")
@@ -85,7 +85,7 @@ def main():
     open_deliverables = df_del[~df_del["status"].isin(["approved"])]
     next_deliverables = open_deliverables.sort_values("due_date").head(3) if not open_deliverables.empty else df_del.sort_values("due_date").head(3)
     next_items = "".join(
-        f"<li><strong>{row['id']}</strong> {row['name']}<br><small>{row['due_date'].strftime('%d %b %Y')} · {row['status'].replace('_', ' ').title()}</small></li>"
+        f"<li><strong>{row['id']}</strong> {row['name']}<br><small>{row['due_date'].strftime('%d %b %Y')}, {row['status'].replace('_', ' ').title()}</small></li>"
         for _, row in next_deliverables.iterrows()
     )
     if not next_items:
@@ -111,7 +111,7 @@ def main():
             <div class="home-panel">
               <h3>Start here</h3>
               <p>You are signed in as <strong>{role_display}</strong>. The dashboard only shows the data and actions available to this role.</p>
-              <p>Reporting line: <strong>{prog["reporting_direct"]}</strong> direct · <strong>{prog["reporting_overall"]}</strong> overall.</p>
+              <p>Reporting line: <strong>{prog["reporting_direct"]}</strong> direct, <strong>{prog["reporting_overall"]}</strong> overall.</p>
               <div class="status-key">
                 {status_badge("not_started")}
                 {status_badge("in_progress")}

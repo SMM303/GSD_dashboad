@@ -91,6 +91,22 @@ def _by_id(rows: list[dict]) -> dict:
     return {row["id"]: row for row in rows if row.get("id") is not None}
 
 
+def _clean_display_text(value):
+    if not isinstance(value, str):
+        return value
+    return (
+        value
+        .replace(" / ", " to ")
+        .replace("/", " and ")
+        .replace("—", "-")
+        .replace("–", "-")
+        .replace("≤", "<=")
+        .replace("≥", ">=")
+        .replace("×", "x")
+        .replace("·", ",")
+    )
+
+
 def _merge_rows_by_id(config_rows: list[dict], live_rows: list[dict]) -> list[dict]:
     live_by_id = _by_id(live_rows)
     merged_rows = []
@@ -363,10 +379,10 @@ def fetch_modules() -> pd.DataFrame:
     for m in payload.modules:
         rows.append({
             "id":                     m.id,
-            "title":                  m.title,
+            "title":                  _clean_display_text(m.title),
             "phase_id":               m.phase_id,
             "status":                 m.status.value,
-            "standards_mapped":       m.standards_mapped,
+            "standards_mapped":       [_clean_display_text(item) for item in m.standards_mapped],
             "standards_count":        len(m.standards_mapped),
             "applicable_deliverable": m.applicable_deliverable,
         })
@@ -385,14 +401,14 @@ def fetch_stakeholders(user_role: str) -> pd.DataFrame:
     for s in payload.stakeholders:
         row = {
             "id":                  s.id,
-            "org_unit":            s.org_unit,
+            "org_unit":            _clean_display_text(s.org_unit),
             "contact_name":        s.contact_name,
             "contact_title":       s.contact_title,
             "actor_category":      s.actor_category.value,
             "role":                s.role.value,
             "method":              s.method.value,
             "access_status":       s.access_status.value,
-            "consultation_window": s.consultation_window,
+            "consultation_window": _clean_display_text(s.consultation_window),
             "engagement_score":    s.engagement_score,
         }
         rows.append({k: row[k] for k in all_cols if k in row})
@@ -410,8 +426,8 @@ def fetch_standards() -> pd.DataFrame:
     for s in payload.standards_reference:
         rows.append({
             "id":       s.id,
-            "source":   s.source,
-            "standard": s.standard,
+            "source":   _clean_display_text(s.source),
+            "standard": _clean_display_text(s.standard),
             "modules":  ", ".join(s.modules),
             "status":   s.status.value,
         })
@@ -438,7 +454,7 @@ def fetch_kpis() -> pd.DataFrame:
             "trend":         k.trend,
             "trend_delta":   k.trend_delta,
             "pct_to_target": k.pct_to_target,
-            "data_source":   k.data_source,
+            "data_source":   _clean_display_text(k.data_source),
         })
     return pd.DataFrame(rows)
 

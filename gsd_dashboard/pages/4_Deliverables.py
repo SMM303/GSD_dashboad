@@ -7,7 +7,7 @@ module status grid, standards reference table, and status update form.
 """
 import streamlit as st
 
-st.set_page_config(page_title="Deliverables · GSD Dashboard", layout="wide")
+st.set_page_config(page_title="Deliverables - GSD Dashboard", layout="wide")
 
 from datetime import date
 
@@ -50,7 +50,7 @@ prog    = payload.programme
 
 st.markdown(
     '<div class="prog-title">Deliverables Tracker</div>'
-    '<div class="prog-sub">TOR §6 deliverables · Payment milestones · Quality gates · Module progress</div>',
+    '<div class="prog-sub">TOR section 6 deliverables, payment milestones, quality gates, and module progress</div>',
     unsafe_allow_html=True,
 )
 st.divider()
@@ -119,11 +119,11 @@ st.dataframe(
 )
 
 # ── Deliverable descriptions ──────────────────────────────────────────────────
-with st.expander("Deliverable descriptions (TOR §6)"):
+with st.expander("Deliverable descriptions from TOR section 6"):
     for _, d in deliverables_df.iterrows():
         badge_html = status_badge(d["status"])
         st.markdown(
-            f"**{d['id']} — {d['name']}** &nbsp; {badge_html}  \n{d['description']}",
+            f"**{d['id']} - {d['name']}** &nbsp; {badge_html}  \n{d['description']}",
             unsafe_allow_html=True,
         )
         st.markdown("")
@@ -133,7 +133,7 @@ if role in ("admin", "implementation"):
     st.divider()
     st.subheader("Update Deliverable Status")
     with st.form("deliverable_status_form"):
-        opts    = {r["id"]: f"{r['id']} — {r['name']}" for _, r in deliverables_df.iterrows()}
+        opts    = {r["id"]: f"{r['id']} - {r['name']}" for _, r in deliverables_df.iterrows()}
         sel_id  = st.selectbox("Deliverable", list(opts.keys()), format_func=lambda x: opts[x])
         sel_row = deliverables_df[deliverables_df["id"] == sel_id].iloc[0]
 
@@ -168,7 +168,7 @@ st.divider()
 
 # ── Curriculum Module Grid ────────────────────────────────────────────────────
 st.subheader("Curriculum Module Progress")
-st.caption("10 modules — Phase 2 (Curriculum Design, Weeks 5–8) / Deliverable D3")
+st.caption("10 modules, Phase 2, Curriculum Design, Weeks 5 to 8, Deliverable D3")
 
 finalized = int((modules_df["status"] == "finalized").sum())
 aligned   = int((modules_df["status"].isin(["standards_aligned","finalized"])).sum())
@@ -199,7 +199,7 @@ st.dataframe(
 if role in ("admin", "implementation"):
     st.subheader("Update Module Status")
     with st.form("module_status_form"):
-        mod_opts = {r["id"]: f"{r['id']} — {r['title']}" for _, r in modules_df.iterrows()}
+        mod_opts = {r["id"]: f"{r['id']} - {r['title']}" for _, r in modules_df.iterrows()}
         sel_mod  = st.selectbox("Module", list(mod_opts.keys()), format_func=lambda x: mod_opts[x])
         sel_mod_row = modules_df[modules_df["id"] == sel_mod].iloc[0]
         status_opts = ["not_started","outline_complete","draft_complete","standards_aligned","finalized"]
@@ -232,7 +232,7 @@ if role in ("implementation", "oversight"):
         std_display[["id","source","standard","modules","status"]].rename(columns={
             "id":       "Ref",
             "source":   "Source Document",
-            "standard": "Standard / Principle",
+            "standard": "Standard and Principle",
             "modules":  "Applicable Modules",
             "status":   "Mapping Status",
         }),

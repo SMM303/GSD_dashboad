@@ -6,7 +6,7 @@ milestone indicators, consultation windows, and a Today line.
 """
 import streamlit as st
 
-st.set_page_config(page_title="Timeline · GSD Dashboard", layout="wide")
+st.set_page_config(page_title="Timeline - GSD Dashboard", layout="wide")
 
 from auth.setup import require_auth, get_user_role, get_display_name
 from auth.audit import log_action
@@ -46,7 +46,7 @@ prog_start = prog.start_date
 
 st.markdown(
     '<div class="prog-title">Programme Timeline</div>'
-    '<div class="prog-sub">Phase bands · Deliverable deadlines · Milestones · Consultation windows</div>',
+    '<div class="prog-sub">Phase bands, deliverable deadlines, milestones, and consultation windows</div>',
     unsafe_allow_html=True,
 )
 st.divider()
@@ -71,8 +71,8 @@ with col_l:
         badge_html = status_badge(p["status"])
         st.markdown(
             f"**{p['name']}** &nbsp;&nbsp; {badge_html} &nbsp;&nbsp; "
-            f"Weeks {p['start_week']}–{p['end_week']} &nbsp;·&nbsp; "
-            f"{p['abs_start'].strftime('%d %b')} – {p['abs_end'].strftime('%d %b %Y')}",
+            f"Weeks {p['start_week']} to {p['end_week']} &nbsp;and&nbsp; "
+            f"{p['abs_start'].strftime('%d %b')} to {p['abs_end'].strftime('%d %b %Y')}",
             unsafe_allow_html=True,
         )
 
@@ -105,10 +105,10 @@ if role in ("admin", "implementation"):
             label   = f"{icon} **{ms['description']}**  \n"
             label  += f"Target: {ms['target_date'].strftime('%d %b %Y')}"
             if checked and ms["completed_date"]:
-                label += f" · Done: {ms['completed_date']}"
+                label += f", Done: {ms['completed_date']}"
 
             if not checked:
-                if st.button(f"Mark complete — {ms['id']}", key=f"ms_{ms['id']}",
+                if st.button(f"Mark complete - {ms['id']}", key=f"ms_{ms['id']}",
                              width="stretch"):
                     write_milestone_complete(ms["id"])
                     log_action("complete_milestone", "milestone", ms["id"])
@@ -121,5 +121,5 @@ else:
     st.subheader("Milestone Progress")
     completed = int(milestones_df["completed"].sum())
     total     = len(milestones_df)
-    st.metric("Milestones complete", f"{completed} / {total}")
+    st.metric("Milestones complete", f"{completed} of {total}")
     st.progress(completed / total if total else 0)

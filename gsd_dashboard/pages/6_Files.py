@@ -5,7 +5,7 @@ Upload and retrieve programme files of any type.
 """
 import streamlit as st
 
-st.set_page_config(page_title="Files · GSD Dashboard", layout="wide")
+st.set_page_config(page_title="Files - GSD Dashboard", layout="wide")
 
 import pandas as pd
 
