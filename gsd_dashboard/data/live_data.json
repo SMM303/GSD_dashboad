@@ -31,43 +31,43 @@
     },
     {
       "id": "MS004",
-      "completed": false,
-      "completed_date": null
+      "completed": true,
+      "completed_date": "2026-05-25"
     },
     {
       "id": "MS005",
-      "completed": false,
-      "completed_date": null
+      "completed": true,
+      "completed_date": "2026-05-25"
     },
     {
       "id": "MS006",
-      "completed": false,
-      "completed_date": null
+      "completed": true,
+      "completed_date": "2026-05-25"
     },
     {
       "id": "MS007",
-      "completed": false,
-      "completed_date": null
+      "completed": true,
+      "completed_date": "2026-05-25"
     },
     {
       "id": "MS008",
-      "completed": false,
-      "completed_date": null
+      "completed": true,
+      "completed_date": "2026-05-25"
     },
     {
       "id": "MS009",
-      "completed": false,
-      "completed_date": null
+      "completed": true,
+      "completed_date": "2026-05-25"
     },
     {
       "id": "MS010",
-      "completed": false,
-      "completed_date": null
+      "completed": true,
+      "completed_date": "2026-05-25"
     },
     {
       "id": "MS011",
-      "completed": false,
-      "completed_date": null
+      "completed": true,
+      "completed_date": "2026-05-25"
     },
     {
       "id": "MS012",
@@ -76,8 +76,8 @@
     },
     {
       "id": "MS013",
-      "completed": false,
-      "completed_date": null
+      "completed": true,
+      "completed_date": "2026-05-25"
     },
     {
       "id": "MS014",
@@ -770,6 +770,258 @@
       "record_id": "kpi_dashboard",
       "session_id": "1847c86d-4c20-4062-9e17-0ecc1ab8304a",
       "timestamp": "2026-05-24T14:51:11.051827"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:46.062443"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:50.571329"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "complete_milestone",
+      "record_type": "milestone",
+      "record_id": "MS005",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:50.645743"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:50.736057"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:51.618889"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "complete_milestone",
+      "record_type": "milestone",
+      "record_id": "MS007",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:51.666659"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:51.715495"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:52.441747"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "complete_milestone",
+      "record_type": "milestone",
+      "record_id": "MS009",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:52.481000"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:52.527815"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:53.851446"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "complete_milestone",
+      "record_type": "milestone",
+      "record_id": "MS011",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:53.920582"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:54.027872"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:55.411264"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "complete_milestone",
+      "record_type": "milestone",
+      "record_id": "MS013",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:55.463112"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:55.507120"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:57.440958"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "complete_milestone",
+      "record_type": "milestone",
+      "record_id": "MS004",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:57.488679"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:57.532607"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:58.171863"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "complete_milestone",
+      "record_type": "milestone",
+      "record_id": "MS006",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:58.211338"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:58.257382"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:58.936128"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "complete_milestone",
+      "record_type": "milestone",
+      "record_id": "MS008",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:58.976632"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:33:59.019649"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:34:00.296734"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "complete_milestone",
+      "record_type": "milestone",
+      "record_id": "MS010",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:34:00.351877"
+    },
+    {
+      "user": "saleh.mansour",
+      "role": "implementation",
+      "action": "view_timeline",
+      "record_type": "page",
+      "record_id": "timeline",
+      "session_id": "6eaa6c46-9221-4377-a36e-48a1748b5489",
+      "timestamp": "2026-05-24T22:34:00.400368"
     }
   ],
   "etl_sync_log": [

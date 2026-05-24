@@ -32,6 +32,8 @@ with st.sidebar:
     st.page_link("pages/4_Deliverables.py",           label="📋  Deliverables")
     st.page_link("pages/5_KPI_Dashboard.py",          label="📊  KPI Dashboard")
     st.page_link("pages/6_Files.py",                  label="📁  Files")
+    if role == "admin":
+        st.page_link("pages/7_Admin.py",                  label="🔐  Admin")
     render_freshness_badges()
 
 log_action("view_files", "page", "files")
@@ -43,7 +45,7 @@ st.markdown(
 )
 st.divider()
 
-if role == "implementation":
+if role in ("admin", "implementation"):
     st.subheader("Upload Files")
     uploads = st.file_uploader(
         "Choose one or more files",
@@ -108,7 +110,7 @@ else:
             width="stretch",
         )
 
-    if role == "implementation":
+    if role in ("admin", "implementation"):
         st.markdown("#### Remove")
         confirm = st.checkbox(
             f"Confirm removal of {options[selected]}",

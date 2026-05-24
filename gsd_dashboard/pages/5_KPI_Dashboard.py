@@ -39,6 +39,8 @@ with st.sidebar:
     st.page_link("pages/4_Deliverables.py",           label="📋  Deliverables")
     st.page_link("pages/5_KPI_Dashboard.py",          label="📊  KPI Dashboard")
     st.page_link("pages/6_Files.py",                  label="📁  Files")
+    if role == "admin":
+        st.page_link("pages/7_Admin.py",                  label="🔐  Admin")
     render_freshness_badges()
 
 log_action("view_kpi_dashboard", "page", "kpi_dashboard")
@@ -254,7 +256,7 @@ if role in ("implementation", "oversight", "executive"):
     )
 
 # ── Audit log viewer (IBG PM / Implementation only) ──────────────────────────
-if role == "implementation" and st.sidebar.checkbox("Show audit log", value=False):
+if role in ("admin", "implementation") and st.sidebar.checkbox("Show audit log", value=False):
     st.divider()
     st.subheader("Audit Log")
     try:

@@ -33,6 +33,8 @@ with st.sidebar:
     st.page_link("pages/4_Deliverables.py",           label="📋  Deliverables")
     st.page_link("pages/5_KPI_Dashboard.py",          label="📊  KPI Dashboard")
     st.page_link("pages/6_Files.py",                  label="📁  Files")
+    if role == "admin":
+        st.page_link("pages/7_Admin.py",                  label="🔐  Admin")
     render_freshness_badges()
 
 log_action("view_timeline", "page", "timeline")
@@ -90,7 +92,7 @@ with col_r:
 st.divider()
 
 # ── Milestone checklist (Implementation only) ────────────────────────────────
-if role == "implementation":
+if role in ("admin", "implementation"):
     st.subheader("Milestones")
     st.caption("Check off milestones as they are completed. Changes persist immediately.")
 

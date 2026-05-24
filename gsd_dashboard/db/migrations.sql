@@ -152,6 +152,18 @@ CREATE TABLE IF NOT EXISTS etl_sync_log (
   rows_upserted INT DEFAULT 0
 );
 
+-- ── app users ─────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS app_users (
+  username      TEXT PRIMARY KEY,
+  display_name  TEXT NOT NULL,
+  password_hash TEXT NOT NULL,
+  role          TEXT NOT NULL CHECK (role IN ('admin','implementation','executive','oversight')),
+  active        BOOLEAN NOT NULL DEFAULT TRUE,
+  created_by    TEXT,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 -- ============================================================
 -- Row Level Security policies
 -- ============================================================
@@ -168,6 +180,30 @@ ALTER TABLE issues                 ENABLE ROW LEVEL SECURITY;
 ALTER TABLE kpi_snapshots          ENABLE ROW LEVEL SECURITY;
 ALTER TABLE audit_log              ENABLE ROW LEVEL SECURITY;
 ALTER TABLE etl_sync_log           ENABLE ROW LEVEL SECURITY;
+ALTER TABLE app_users              ENABLE ROW LEVEL SECURITY;
+
+-- Recreate policies so this migration can be safely rerun.
+DROP POLICY IF EXISTS "phases_read_all" ON phases;
+DROP POLICY IF EXISTS "milestones_read_all" ON milestones;
+DROP POLICY IF EXISTS "modules_read_all" ON modules;
+DROP POLICY IF EXISTS "risks_read_all" ON risks;
+DROP POLICY IF EXISTS "risk_history_read_all" ON risk_history;
+DROP POLICY IF EXISTS "kpi_read_all" ON kpi_snapshots;
+DROP POLICY IF EXISTS "etl_sync_read_all" ON etl_sync_log;
+DROP POLICY IF EXISTS "deliverables_read_all" ON deliverables;
+DROP POLICY IF EXISTS "stakeholders_read_all" ON stakeholders;
+DROP POLICY IF EXISTS "issues_implementation" ON issues;
+DROP POLICY IF EXISTS "issues_oversight_high" ON issues;
+DROP POLICY IF EXISTS "audit_log_insert" ON audit_log;
+DROP POLICY IF EXISTS "audit_log_read_impl" ON audit_log;
+DROP POLICY IF EXISTS "deliverables_update_impl" ON deliverables;
+DROP POLICY IF EXISTS "milestones_update_impl" ON milestones;
+DROP POLICY IF EXISTS "risks_update_impl" ON risks;
+DROP POLICY IF EXISTS "risk_history_insert_impl" ON risk_history;
+DROP POLICY IF EXISTS "modules_update_impl" ON modules;
+DROP POLICY IF EXISTS "stakeholders_update_impl" ON stakeholders;
+DROP POLICY IF EXISTS "issues_insert_impl" ON issues;
+DROP POLICY IF EXISTS "issues_update_impl" ON issues;
 
 -- All roles: read phases, milestones, modules, risks, kpi_snapshots, etl_sync_log
 CREATE POLICY "phases_read_all"        ON phases           FOR SELECT USING (auth.role() = 'authenticated');
@@ -186,7 +222,7 @@ CREATE POLICY "stakeholders_read_all"  ON stakeholders     FOR SELECT USING (aut
 
 -- Issues: implementation sees all; oversight sees high-risk only; executive sees none (uses summary view)
 CREATE POLICY "issues_implementation"  ON issues FOR SELECT
-  USING ((auth.jwt()->'user_metadata'->>'dashboard_role') = 'implementation');
+  USING ((auth.jwt()->'user_metadata'->>'dashboard_role') IN ('admin','implementation'));
 CREATE POLICY "issues_oversight_high"  ON issues FOR SELECT
   USING (
     (auth.jwt()->'user_metadata'->>'dashboard_role') = 'oversight'
@@ -197,25 +233,25 @@ CREATE POLICY "issues_oversight_high"  ON issues FOR SELECT
 CREATE POLICY "audit_log_insert"       ON audit_log FOR INSERT
   WITH CHECK (auth.role() = 'authenticated');
 CREATE POLICY "audit_log_read_impl"    ON audit_log FOR SELECT
-  USING ((auth.jwt()->'user_metadata'->>'dashboard_role') = 'implementation');
+  USING ((auth.jwt()->'user_metadata'->>'dashboard_role') IN ('admin','implementation'));
 
 -- Write policies: implementation role only
 CREATE POLICY "deliverables_update_impl" ON deliverables FOR UPDATE
-  USING ((auth.jwt()->'user_metadata'->>'dashboard_role') = 'implementation');
+  USING ((auth.jwt()->'user_metadata'->>'dashboard_role') IN ('admin','implementation'));
 CREATE POLICY "milestones_update_impl"   ON milestones   FOR UPDATE
-  USING ((auth.jwt()->'user_metadata'->>'dashboard_role') = 'implementation');
+  USING ((auth.jwt()->'user_metadata'->>'dashboard_role') IN ('admin','implementation'));
 CREATE POLICY "risks_update_impl"        ON risks        FOR UPDATE
-  USING ((auth.jwt()->'user_metadata'->>'dashboard_role') = 'implementation');
+  USING ((auth.jwt()->'user_metadata'->>'dashboard_role') IN ('admin','implementation'));
 CREATE POLICY "risk_history_insert_impl" ON risk_history FOR INSERT
-  WITH CHECK ((auth.jwt()->'user_metadata'->>'dashboard_role') = 'implementation');
+  WITH CHECK ((auth.jwt()->'user_metadata'->>'dashboard_role') IN ('admin','implementation'));
 CREATE POLICY "modules_update_impl"      ON modules      FOR UPDATE
-  USING ((auth.jwt()->'user_metadata'->>'dashboard_role') = 'implementation');
+  USING ((auth.jwt()->'user_metadata'->>'dashboard_role') IN ('admin','implementation'));
 CREATE POLICY "stakeholders_update_impl" ON stakeholders FOR UPDATE
-  USING ((auth.jwt()->'user_metadata'->>'dashboard_role') = 'implementation');
+  USING ((auth.jwt()->'user_metadata'->>'dashboard_role') IN ('admin','implementation'));
 CREATE POLICY "issues_insert_impl"       ON issues       FOR INSERT
-  WITH CHECK ((auth.jwt()->'user_metadata'->>'dashboard_role') = 'implementation');
+  WITH CHECK ((auth.jwt()->'user_metadata'->>'dashboard_role') IN ('admin','implementation'));
 CREATE POLICY "issues_update_impl"       ON issues       FOR UPDATE
-  USING ((auth.jwt()->'user_metadata'->>'dashboard_role') = 'implementation');
+  USING ((auth.jwt()->'user_metadata'->>'dashboard_role') IN ('admin','implementation'));
 
 -- ── Convenience view for Executive issue summary ────────────────────────
 CREATE OR REPLACE VIEW issues_summary AS
@@ -248,6 +284,8 @@ GRANT SELECT ON
   issues_summary
 TO authenticated, service_role;
 
+GRANT SELECT ON app_users TO service_role;
+
 GRANT UPDATE ON
   milestones,
   deliverables,
@@ -278,7 +316,8 @@ GRANT INSERT, UPDATE, DELETE ON
   issues,
   kpi_snapshots,
   audit_log,
-  etl_sync_log
+  etl_sync_log,
+  app_users
 TO service_role;
 
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO authenticated, service_role;

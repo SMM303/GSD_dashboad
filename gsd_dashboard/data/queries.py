@@ -27,6 +27,11 @@ _CONFIG_PATH = Path(__file__).parent / "programme_config.json"
 # ---------------------------------------------------------------------------
 
 STAKEHOLDER_COLS_BY_ROLE: dict[str, list[str]] = {
+    "admin": [
+        "id", "org_unit", "contact_name", "contact_title",
+        "actor_category", "role", "method",
+        "access_status", "consultation_window", "engagement_score",
+    ],
     "implementation": [
         "id", "org_unit", "contact_name", "contact_title",
         "actor_category", "role", "method",

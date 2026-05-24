@@ -38,6 +38,8 @@ with st.sidebar:
     st.page_link("pages/4_Deliverables.py",           label="📋  Deliverables")
     st.page_link("pages/5_KPI_Dashboard.py",          label="📊  KPI Dashboard")
     st.page_link("pages/6_Files.py",                  label="📁  Files")
+    if role == "admin":
+        st.page_link("pages/7_Admin.py",                  label="🔐  Admin")
     render_freshness_badges()
 
 log_action("view_deliverables", "page", "deliverables")
@@ -127,7 +129,7 @@ with st.expander("Deliverable descriptions (TOR §6)"):
         st.markdown("")
 
 # ── Status update form (Implementation only) ──────────────────────────────────
-if role == "implementation":
+if role in ("admin", "implementation"):
     st.divider()
     st.subheader("Update Deliverable Status")
     with st.form("deliverable_status_form"):
@@ -195,7 +197,7 @@ st.dataframe(
 )
 
 # ── Module status update (Implementation only) ───────────────────────────────
-if role == "implementation":
+if role in ("admin", "implementation"):
     st.subheader("Update Module Status")
     with st.form("module_status_form"):
         mod_opts = {r["id"]: f"{r['id']} — {r['title']}" for _, r in modules_df.iterrows()}

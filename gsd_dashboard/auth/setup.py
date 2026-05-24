@@ -198,19 +198,17 @@ def _demo_login_form() -> None:
 
 def _production_login_form() -> None:
     """Use private bcrypt-hashed credentials from secrets or environment."""
-    import bcrypt
     import yaml
+
+    from auth.accounts import authenticate_account, verify_password
 
     try:
         raw_config = _secret("auth_credentials") or os.environ.get("AUTH_CREDENTIALS_YAML")
-        if not raw_config:
-            raise KeyError("auth_credentials")
-        config     = yaml.safe_load(raw_config) if isinstance(raw_config, str) else raw_config
+        config = yaml.safe_load(raw_config) if isinstance(raw_config, str) and raw_config else raw_config
     except Exception:
-        st.error("auth_credentials not found. Set AUTH_CREDENTIALS_YAML or use DEMO_MODE=true.")
-        return
+        config = None
 
-    users = config.get("credentials", {}).get("usernames", {})
+    users = (config or {}).get("credentials", {}).get("usernames", {})
     st.caption(f"Production mode · Sessions expire after {get_session_timeout_minutes()} minutes of inactivity.")
 
     with st.form("production_login"):
@@ -220,17 +218,26 @@ def _production_login_form() -> None:
 
     if submit:
         username = username.strip().lower()
+        account = authenticate_account(username, password)
+        if account:
+            _start_session(
+                account["username"],
+                account["name"],
+                account["role"],
+            )
+            st.rerun()
+
         user_cfg = users.get(username)
         hashed = str(user_cfg.get("password", "")) if user_cfg else ""
-        if user_cfg and bcrypt.checkpw(password.encode(), hashed.encode()):
+        if user_cfg and verify_password(password, hashed):
             _start_session(
                 username,
                 user_cfg.get("name", username),
                 user_cfg.get("role", "executive"),
             )
             st.rerun()
-        else:
-            st.error("Incorrect username or password.")
+
+        st.error("Incorrect username or password.")
 
     if st.session_state.get("authenticated"):
         st.rerun()

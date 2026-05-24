@@ -34,6 +34,8 @@ with st.sidebar:
     st.page_link("pages/4_Deliverables.py",           label="📋  Deliverables")
     st.page_link("pages/5_KPI_Dashboard.py",          label="📊  KPI Dashboard")
     st.page_link("pages/6_Files.py",                  label="📁  Files")
+    if role == "admin":
+        st.page_link("pages/7_Admin.py",                  label="🔐  Admin")
     render_freshness_badges()
 
 log_action("view_risk_register", "page", "risk_heatmap")
@@ -129,7 +131,7 @@ if not escalated_risks.empty:
             st.markdown(f"**Owner:** {r['owner']}")
 
 # ── Risk update form (Implementation only) ────────────────────────────────────
-if role == "implementation":
+if role in ("admin", "implementation"):
     st.divider()
     st.subheader("Update Risk Position")
     st.caption(

@@ -238,7 +238,7 @@ def render_sidebar_branding(display_name: str, role: str) -> None:
             '</div>',
             unsafe_allow_html=True,
         )
-        role_display = {"implementation": "Implementation", "executive": "Executive", "oversight": "Oversight"}.get(role, role.title())
+        role_display = {"admin": "Admin", "implementation": "Implementation", "executive": "Executive", "oversight": "Oversight"}.get(role, role.title())
         remaining = get_session_remaining_minutes()
         st.markdown(
             f'<div class="sidebar-session">'

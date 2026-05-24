@@ -36,6 +36,8 @@ def main():
         st.page_link("pages/4_Deliverables.py",       label="📋  Deliverables",        icon=None)
         st.page_link("pages/5_KPI_Dashboard.py",      label="📊  KPI Dashboard",       icon=None)
         st.page_link("pages/6_Files.py",              label="📁  Files",               icon=None)
+        if role == "admin":
+            st.page_link("pages/7_Admin.py",          label="🔐  Admin",               icon=None)
 
     render_freshness_badges()
 
@@ -72,7 +74,7 @@ def main():
 
     st.divider()
 
-    role_display = {"implementation": "Implementation", "executive": "Executive", "oversight": "Oversight"}.get(role, role.title())
+    role_display = {"admin": "Admin", "implementation": "Implementation", "executive": "Executive", "oversight": "Oversight"}.get(role, role.title())
     next_deliverables = df_del.sort_values("due_date").head(3)
     next_items = "".join(
         f"<li><strong>{row['id']}</strong> {row['name']} · {row['due_date'].strftime('%d %b %Y')} · {row['status'].replace('_', ' ').title()}</li>"
