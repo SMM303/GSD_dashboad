@@ -11,8 +11,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-from auth.setup import is_authenticated, render_login_page, logout
-from auth.audit import log_action
+from auth.setup import enforce_session_timeout, is_authenticated, render_login_page
 from components.branding import inject_luxury_styles, render_sidebar_branding
 from components.freshness import render_freshness_badges
 
@@ -20,7 +19,7 @@ from components.freshness import render_freshness_badges
 def main():
     inject_luxury_styles()
 
-    if not is_authenticated():
+    if not is_authenticated() or not enforce_session_timeout():
         render_login_page()
         return
 
@@ -37,10 +36,6 @@ def main():
         st.page_link("pages/4_Deliverables.py",       label="📋  Deliverables",        icon=None)
         st.page_link("pages/5_KPI_Dashboard.py",      label="📊  KPI Dashboard",       icon=None)
         st.page_link("pages/6_Files.py",              label="📁  Files",               icon=None)
-        st.divider()
-        if st.button("Sign Out", width="stretch"):
-            log_action("logout", "session")
-            logout()
 
     render_freshness_badges()
 
@@ -58,7 +53,7 @@ def main():
         f'Start: {prog.start_date.strftime("%d %b %Y")}</div>',
         unsafe_allow_html=True,
     )
-    st.markdown("---")
+    st.divider()
 
     # Summary metrics row
     total      = len(df_del)
@@ -75,13 +70,50 @@ def main():
     c3.metric("Overdue",                overdue,   delta_color="inverse")
     c4.metric("Days to next deadline",  days_left, delta_color="normal" if days_left >= 0 else "inverse")
 
-    st.markdown("---")
-    st.markdown(
-        "Use the **sidebar** to navigate between views.  \n"
-        "Role-based access is enforced — what you see depends on your role.  \n\n"
-        f"Reporting to: **{prog.reporting_line.direct}** (direct) · "
-        f"**{prog.reporting_line.overall}** (overall)"
+    st.divider()
+
+    role_display = {"implementation": "Implementation", "executive": "Executive", "oversight": "Oversight"}.get(role, role.title())
+    next_deliverables = df_del.sort_values("due_date").head(3)
+    next_items = "".join(
+        f"<li><strong>{row['id']}</strong> {row['name']} · {row['due_date'].strftime('%d %b %Y')} · {row['status'].replace('_', ' ').title()}</li>"
+        for _, row in next_deliverables.iterrows()
     )
+    if not next_items:
+        next_items = "<li>No deliverables available.</li>"
+
+    st.markdown(
+        f"""
+        <div class="home-panel">
+          <h3>Start here</h3>
+          <p>Your current role is <strong>{role_display}</strong>. Use the sidebar to move between timeline, stakeholder, risk, deliverable, KPI, and file views. Each view only shows the data and actions available to your role.</p>
+          <p>Reporting line: <strong>{prog.reporting_line.direct}</strong> direct · <strong>{prog.reporting_line.overall}</strong> overall.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    col_next, col_access = st.columns([1.4, 1])
+    with col_next:
+        st.markdown(
+            f"""
+            <div class="home-panel">
+              <h3>Next deliverables</h3>
+              <ul>{next_items}</ul>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+    with col_access:
+        st.markdown(
+            """
+            <div class="home-panel">
+              <h3>How to read the dashboard</h3>
+              <p>The top numbers summarize progress. Status badges show the current workflow stage. Editable forms are available only where your role is allowed to make changes.</p>
+              <p>Sessions expire automatically after inactivity for security.</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
 
 if __name__ == "__main__":

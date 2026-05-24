@@ -11,9 +11,9 @@ from __future__ import annotations
 
 import os
 import uuid
+from datetime import datetime, timedelta, timezone
 
 import streamlit as st
-from typing import Optional, Tuple
 
 
 # ---------------------------------------------------------------------------
@@ -63,6 +63,85 @@ def is_authenticated() -> bool:
     return bool(st.session_state.get("authenticated"))
 
 
+def get_session_timeout_minutes() -> int:
+    raw_value = _secret("SESSION_TIMEOUT_MINUTES", os.environ.get("SESSION_TIMEOUT_MINUTES", "30"))
+    try:
+        return max(5, int(raw_value))
+    except (TypeError, ValueError):
+        return 30
+
+
+def _now_utc() -> datetime:
+    return datetime.now(timezone.utc)
+
+
+def _parse_session_time(value) -> datetime | None:
+    if not value:
+        return None
+    if isinstance(value, datetime):
+        return value if value.tzinfo else value.replace(tzinfo=timezone.utc)
+    try:
+        parsed = datetime.fromisoformat(str(value))
+        return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
+    except ValueError:
+        return None
+
+
+def _start_session(username: str, display_name: str, role: str) -> None:
+    now = _now_utc().isoformat()
+    st.session_state["authenticated"] = True
+    st.session_state["username"] = username
+    st.session_state["display_name"] = display_name
+    st.session_state["user_role"] = role
+    st.session_state["session_id"] = str(uuid.uuid4())
+    st.session_state["authenticated_at"] = now
+    st.session_state["last_activity_at"] = now
+
+
+def _clear_session(expired: bool = False) -> None:
+    for key in [
+        "authenticated",
+        "username",
+        "display_name",
+        "user_role",
+        "session_id",
+        "authenticated_at",
+        "last_activity_at",
+    ]:
+        st.session_state.pop(key, None)
+    if expired:
+        st.session_state["session_expired"] = True
+
+
+def enforce_session_timeout() -> bool:
+    """Return True when the active session is still valid."""
+    if not is_authenticated():
+        return False
+
+    last_activity = _parse_session_time(st.session_state.get("last_activity_at"))
+    if last_activity is None:
+        _clear_session(expired=True)
+        return False
+
+    timeout = timedelta(minutes=get_session_timeout_minutes())
+    if _now_utc() - last_activity > timeout:
+        _clear_session(expired=True)
+        return False
+
+    st.session_state["last_activity_at"] = _now_utc().isoformat()
+    return True
+
+
+def get_session_remaining_minutes() -> int:
+    last_activity = _parse_session_time(st.session_state.get("last_activity_at"))
+    if not last_activity:
+        return 0
+    expires_at = last_activity + timedelta(minutes=get_session_timeout_minutes())
+    remaining = expires_at - _now_utc()
+    remaining_seconds = max(0, remaining.total_seconds())
+    return int((remaining_seconds + 59) // 60)
+
+
 def get_user_role() -> str:
     return st.session_state.get("user_role", "executive")
 
@@ -81,20 +160,12 @@ def get_display_name() -> str:
 
 def render_login_page() -> None:
     """Render the login screen and set session state on success."""
-    st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400&display=swap');
-    .login-header { font-family: 'Playfair Display', serif; font-size: 26px;
-                    color: #1B3A6B; text-align: center; margin-bottom: 4px; }
-    .login-sub    { font-family: 'Inter', sans-serif; font-size: 13px;
-                    color: #6b7280; text-align: center; margin-bottom: 28px; }
-    </style>
-    """, unsafe_allow_html=True)
-
-    col_l, col_m, col_r = st.columns([1, 2, 1])
+    col_l, col_m, col_r = st.columns([1, 1.2, 1])
     with col_m:
         st.markdown('<div class="login-header">IOM Lebanon / GSD</div>', unsafe_allow_html=True)
         st.markdown('<div class="login-sub">Curriculum Development Consultancy — Programme Dashboard</div>', unsafe_allow_html=True)
+        if st.session_state.pop("session_expired", False):
+            st.warning("Your session expired for security. Please sign in again.")
 
         if _is_demo():
             _demo_login_form()
@@ -103,33 +174,26 @@ def render_login_page() -> None:
 
 
 def _demo_login_form() -> None:
-    col_l, col_m, col_r = st.columns([1, 2, 1])
-    with col_m:
-        st.info("Demo mode — use the credentials below.")
-        st.caption(
-            "**saleh.mansour** / consultant123 (Implementation)  \n"
-            "**iom.pm** / pm123 (Implementation — IBG PM)  \n"
-            "**iom.hoo** / hoo123 (Executive)  \n"
-            "**iom.oversight** / oversight123 (Oversight)"
-        )
+    st.info("Demo mode - use the credentials below.")
+    st.caption(
+        "**saleh.mansour** / consultant123 (Implementation)  \n"
+        "**iom.pm** / pm123 (Implementation - IBG PM)  \n"
+        "**iom.hoo** / hoo123 (Executive)  \n"
+        "**iom.oversight** / oversight123 (Oversight)"
+    )
 
-        with st.form("demo_login"):
-            username = st.text_input("Username", placeholder="e.g. saleh.mansour")
-            password = st.text_input("Password", type="password")
-            submit   = st.form_submit_button("Sign In", width="stretch")
+    with st.form("demo_login"):
+        username = st.text_input("Username", placeholder="e.g. saleh.mansour")
+        password = st.text_input("Password", type="password")
+        submit = st.form_submit_button("Sign in", width="stretch")
 
-        if submit:
-            user = DEMO_USERS.get(username.strip().lower())
-            if user and user["password"] == password:
-                import uuid
-                st.session_state["authenticated"]  = True
-                st.session_state["username"]        = username.strip().lower()
-                st.session_state["display_name"]    = user["name"]
-                st.session_state["user_role"]       = user["role"]
-                st.session_state["session_id"]      = str(uuid.uuid4())
-                st.rerun()
-            else:
-                st.error("Incorrect username or password.")
+    if submit:
+        user = DEMO_USERS.get(username.strip().lower())
+        if user and user["password"] == password:
+            _start_session(username.strip().lower(), user["name"], user["role"])
+            st.rerun()
+        else:
+            st.error("Incorrect username or password.")
 
 
 def _production_login_form() -> None:
@@ -147,28 +211,28 @@ def _production_login_form() -> None:
         return
 
     users = config.get("credentials", {}).get("usernames", {})
+    st.caption(f"Production mode · Sessions expire after {get_session_timeout_minutes()} minutes of inactivity.")
 
     with st.form("production_login"):
         username = st.text_input("Username")
         password = st.text_input("Password", type="password")
-        submit = st.form_submit_button("Login", width="content")
+        submit = st.form_submit_button("Sign in", width="stretch")
 
     if submit:
         username = username.strip().lower()
         user_cfg = users.get(username)
         hashed = str(user_cfg.get("password", "")) if user_cfg else ""
         if user_cfg and bcrypt.checkpw(password.encode(), hashed.encode()):
-            st.session_state["authenticated"] = True
-            st.session_state["username"] = username
-            st.session_state["user_role"] = user_cfg.get("role", "executive")
-            st.session_state["display_name"] = user_cfg.get("name", username)
-            st.session_state.setdefault("session_id", str(uuid.uuid4()))
+            _start_session(
+                username,
+                user_cfg.get("name", username),
+                user_cfg.get("role", "executive"),
+            )
             st.rerun()
         else:
             st.error("Incorrect username or password.")
 
     if st.session_state.get("authenticated"):
-        st.session_state.setdefault("session_id", str(uuid.uuid4()))
         st.rerun()
 
 
@@ -177,8 +241,7 @@ def _production_login_form() -> None:
 # ---------------------------------------------------------------------------
 
 def logout() -> None:
-    for key in ["authenticated", "username", "display_name", "user_role", "session_id"]:
-        st.session_state.pop(key, None)
+    _clear_session()
     st.rerun()
 
 
@@ -188,6 +251,6 @@ def logout() -> None:
 
 def require_auth() -> None:
     """Redirect to login if not authenticated. Call at top of every page."""
-    if not is_authenticated():
+    if not is_authenticated() or not enforce_session_timeout():
         st.switch_page("app.py")
         st.stop()
