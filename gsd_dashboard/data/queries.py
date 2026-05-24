@@ -46,21 +46,25 @@ STAKEHOLDER_COLS_BY_ROLE: dict[str, list[str]] = {
 # ---------------------------------------------------------------------------
 
 def _is_demo() -> bool:
+    value = _secret("DEMO_MODE", os.environ.get("DEMO_MODE", "true"))
+    return str(value).lower() in ("true", "1", "yes")
+
+
+def _secret(name: str, default=None):
     try:
-        value = st.secrets.get("DEMO_MODE", os.environ.get("DEMO_MODE", "true"))
-        return str(value).lower() in ("true", "1", "yes")
+        return st.secrets.get(name, default)
     except Exception:
-        return str(os.environ.get("DEMO_MODE", "true")).lower() in ("true", "1", "yes")
+        return default
 
 
 def _get_supabase():
     try:
         from supabase import create_client
-        url = st.secrets.get("SUPABASE_URL") or os.environ.get("SUPABASE_URL", "")
+        url = _secret("SUPABASE_URL") or os.environ.get("SUPABASE_URL", "")
         key = (
-            st.secrets.get("SUPABASE_SERVICE_ROLE_KEY")
+            _secret("SUPABASE_SERVICE_ROLE_KEY")
             or os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")
-            or st.secrets.get("SUPABASE_ANON_KEY")
+            or _secret("SUPABASE_ANON_KEY")
             or os.environ.get("SUPABASE_ANON_KEY", "")
         )
         if url and key:

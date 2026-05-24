@@ -12,11 +12,14 @@ import streamlit as st
 
 
 def _is_demo() -> bool:
+    return str(_secret("DEMO_MODE", os.environ.get("DEMO_MODE", "true"))).lower() in ("true", "1", "yes")
+
+
+def _secret(name: str, default=None):
     try:
-        value = st.secrets.get("DEMO_MODE", os.environ.get("DEMO_MODE", "true"))
-        return str(value).lower() in ("true", "1", "yes")
+        return st.secrets.get(name, default)
     except Exception:
-        return str(os.environ.get("DEMO_MODE", "true")).lower() in ("true", "1", "yes")
+        return default
 
 
 def log_action(action: str, record_type: str, record_id: str = "") -> None:

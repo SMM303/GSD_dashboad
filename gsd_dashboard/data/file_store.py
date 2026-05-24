@@ -24,11 +24,14 @@ _BUCKET = "dashboard-uploads"
 
 
 def _is_demo() -> bool:
+    return str(_secret("DEMO_MODE", os.environ.get("DEMO_MODE", "true"))).lower() in ("true", "1", "yes")
+
+
+def _secret(name: str, default=None):
     try:
-        value = st.secrets.get("DEMO_MODE", os.environ.get("DEMO_MODE", "true"))
-        return str(value).lower() in ("true", "1", "yes")
+        return st.secrets.get(name, default)
     except Exception:
-        return str(os.environ.get("DEMO_MODE", "true")).lower() in ("true", "1", "yes")
+        return default
 
 
 def _safe_name(name: str) -> str:

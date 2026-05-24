@@ -44,11 +44,14 @@ DEMO_USERS: dict[str, dict] = {
 
 
 def _is_demo() -> bool:
+    return str(_secret("DEMO_MODE", os.environ.get("DEMO_MODE", "true"))).lower() in ("true", "1", "yes")
+
+
+def _secret(name: str, default=None):
     try:
-        value = st.secrets.get("DEMO_MODE", os.environ.get("DEMO_MODE", "true"))
-        return str(value).lower() in ("true", "1", "yes")
+        return st.secrets.get(name, default)
     except Exception:
-        return str(os.environ.get("DEMO_MODE", "true")).lower() in ("true", "1", "yes")
+        return default
 
 
 # ---------------------------------------------------------------------------
@@ -134,7 +137,7 @@ def _production_login_form() -> None:
     import yaml
 
     try:
-        raw_config = st.secrets.get("auth_credentials") or os.environ.get("AUTH_CREDENTIALS_YAML")
+        raw_config = _secret("auth_credentials") or os.environ.get("AUTH_CREDENTIALS_YAML")
         if not raw_config:
             raise KeyError("auth_credentials")
         config     = yaml.safe_load(raw_config) if isinstance(raw_config, str) else raw_config
@@ -142,7 +145,7 @@ def _production_login_form() -> None:
         st.error("auth_credentials not found. Set AUTH_CREDENTIALS_YAML or use DEMO_MODE=true.")
         return
 
-    cookie = st.secrets.get("auth_cookie", {})
+    cookie = _secret("auth_cookie", {}) or {}
     cookie_name = cookie.get("name") or os.environ.get("AUTH_COOKIE_NAME", "gsd_auth")
     cookie_key = cookie.get("key") or os.environ.get("AUTH_COOKIE_KEY", "CHANGE_ME")
     cookie_expiry = cookie.get("expiry_days") or int(os.environ.get("AUTH_COOKIE_EXPIRY_DAYS", "1"))
