@@ -569,3 +569,165 @@ def write_issue_status(issue_id: int, status: str) -> None:
         client = _get_supabase()
         if client:
             client.table("issues").update({"status": status}).eq("id", issue_id).execute()
+
+
+# ---------------------------------------------------------------------------
+# Admin CRUD helpers — require a Supabase connection (not available in demo)
+# ---------------------------------------------------------------------------
+
+def _admin_client():
+    """Return the Supabase client, or raise AppError if unavailable."""
+    from utils.errors import AppError
+    client = _get_supabase()
+    if not client:
+        raise AppError("A Supabase connection is required for data management. Enable production mode.")
+    return client
+
+
+# ── Risks ────────────────────────────────────────────────────────────────────
+
+def write_new_risk(data: dict) -> None:
+    """Insert a new risk row. Clears payload cache."""
+    client = _admin_client()
+    client.table("risks").insert(data).execute()
+    fetch_risks.clear()
+    load_payload.clear()
+
+
+#: Fields the admin may edit without touching the risk score or history.
+_RISK_DEFINITION_FIELDS = {"description", "category", "mitigation", "escalation_trigger", "owner"}
+
+
+def write_risk_definition(risk_id: str, updates: dict) -> None:
+    """Update descriptive risk fields only.
+    likelihood / impact / status are intentionally excluded here —
+    those changes must go through write_risk_update (page 3) so history is recorded."""
+    safe = {k: v for k, v in updates.items() if k in _RISK_DEFINITION_FIELDS}
+    if not safe:
+        return
+    client = _admin_client()
+    client.table("risks").update(safe).eq("id", risk_id).execute()
+    fetch_risks.clear()
+    load_payload.clear()
+
+
+def write_risk_close(risk_id: str) -> None:
+    """Soft-delete: set risk status to closed. Risks are never hard-deleted."""
+    client = _admin_client()
+    client.table("risks").update({"status": "closed"}).eq("id", risk_id).execute()
+    fetch_risks.clear()
+    load_payload.clear()
+
+
+# ── Deliverables ──────────────────────────────────────────────────────────────
+
+def write_new_deliverable(data: dict) -> None:
+    """Insert a new deliverable definition. Clears payload cache."""
+    client = _admin_client()
+    client.table("deliverables").insert(data).execute()
+    fetch_deliverables.clear()
+    load_payload.clear()
+
+
+#: Fields the admin may edit in the definition tab.
+#: status / quality_gate changes go through write_deliverable_update (page 4).
+_DELIVERABLE_DEFINITION_FIELDS = {"name", "description", "due_date", "due_week", "payment_pct", "reviewer"}
+
+
+def write_deliverable_definition(deliverable_id: str, updates: dict) -> None:
+    """Update definition fields for a deliverable (not status/quality_gate)."""
+    safe = {k: v for k, v in updates.items() if k in _DELIVERABLE_DEFINITION_FIELDS}
+    if not safe:
+        return
+    client = _admin_client()
+    client.table("deliverables").update(safe).eq("id", deliverable_id).execute()
+    fetch_deliverables.clear()
+    load_payload.clear()
+
+
+def write_deliverable_delete(deliverable_id: str) -> None:
+    """Hard-delete a deliverable — only permitted when status is not_started."""
+    from utils.errors import AppError
+    client = _admin_client()
+    resp = client.table("deliverables").select("id,status").eq("id", deliverable_id).limit(1).execute()
+    rows = resp.data or []
+    if not rows:
+        raise ValueError(f"Deliverable {deliverable_id!r} not found.")
+    if rows[0].get("status", "not_started") != "not_started":
+        raise AppError(
+            "Only deliverables with status 'Not Started' can be deleted. "
+            "Change the status first if you need to remove this record."
+        )
+    client.table("deliverables").delete().eq("id", deliverable_id).execute()
+    fetch_deliverables.clear()
+    load_payload.clear()
+
+
+# ── Stakeholders ──────────────────────────────────────────────────────────────
+
+def write_new_stakeholder(data: dict) -> None:
+    """Insert a new stakeholder record."""
+    client = _admin_client()
+    client.table("stakeholders").insert(data).execute()
+    fetch_stakeholders.clear()
+    load_payload.clear()
+
+
+def write_stakeholder_definition(stakeholder_id: str, updates: dict) -> None:
+    """Update any stakeholder field (admin has full access)."""
+    client = _admin_client()
+    client.table("stakeholders").update(updates).eq("id", stakeholder_id).execute()
+    fetch_stakeholders.clear()
+    load_payload.clear()
+
+
+def write_stakeholder_delete(stakeholder_id: str) -> None:
+    """Hard-delete a stakeholder record."""
+    client = _admin_client()
+    client.table("stakeholders").delete().eq("id", stakeholder_id).execute()
+    fetch_stakeholders.clear()
+    load_payload.clear()
+
+
+# ── Audit log ─────────────────────────────────────────────────────────────────
+
+def fetch_audit_log_admin(
+    limit: int = 100,
+    user_filter: str = "",
+    action_filter: str = "",
+) -> pd.DataFrame:
+    """
+    Fetch audit log rows for the admin viewer.
+
+    In demo mode reads from demo_store.  In production queries Supabase
+    directly (bypasses the payload / cache layer).
+    """
+    empty = pd.DataFrame(columns=["timestamp", "user", "role", "action",
+                                   "record_type", "record_id", "session_id"])
+    if _is_demo():
+        try:
+            from data.demo_store import get_audit_log
+            rows = get_audit_log() or []
+            return pd.DataFrame(rows) if rows else empty
+        except Exception:
+            return empty
+
+    client = _get_supabase()
+    if not client:
+        return empty
+
+    try:
+        query = (
+            client.table("audit_log")
+            .select("timestamp,user,role,action,record_type,record_id,session_id")
+            .order("timestamp", desc=True)
+            .limit(limit)
+        )
+        if user_filter.strip():
+            query = query.eq("user", user_filter.strip())
+        if action_filter.strip():
+            query = query.ilike("action", f"%{action_filter.strip()}%")
+        rows = query.execute().data or []
+        return pd.DataFrame(rows) if rows else empty
+    except Exception:
+        return empty
